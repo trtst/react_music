@@ -1,0 +1,57 @@
+.playlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: 0;
+
+    .item {
+        width: calc(100% / 6 - 20px);
+        padding: 20px 0;
+        box-sizing: border-box;
+    
+        .tags {
+            display: flex;
+            padding: 5px 0;
+            line-height: 16px;
+            height: 16px;
+        }
+    }
+
+    :global {
+        .ant-skeleton {
+            display: block!important;
+        
+            &.skeleton-img {
+                display: block;
+                position: relative;
+                padding-top: 100%;
+                box-shadow: var(--t-modal-shadow);
+            }
+        
+            .ant-skeleton-image {
+                position: absolute;
+                top: 0;
+                width: 100%!important;
+                height: 100%!important;
+                z-index: 3;
+                border-radius: 4px;
+            }
+        
+            .ant-skeleton-button {
+                height: 20px!important;
+            }
+        
+            .ant-skeleton-avatar {
+                width: 19px!important;
+                height: 19px!important;
+                margin-right: 5px;
+            }
+        
+            .info_title {
+                margin: 15px 0 4px;
+            }
+        }
+    }
+}
+
+

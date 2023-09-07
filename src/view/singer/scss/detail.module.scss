@@ -1,0 +1,460 @@
+.detail {
+    position: relative;
+    display: flex;
+    padding: 35px 0 40px;
+
+    .detail_main {
+        flex: 1;
+        box-shadow: var(--t-modal-shadow);
+        background: var(--box-background);
+    }
+
+    .detail_aside {
+        width: $sideWidth;
+        margin-left: $paddingW;
+    }
+
+
+    .detail_headImg {
+        display: flex;
+        align-items: center;
+        height: 230px;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: auto;
+            min-height: 250px;
+            filter: blur(20px);
+        }
+    }
+
+    .detail_info {
+        position: relative;
+        z-index: 9;
+        display: flex;
+        padding: 0 20px;
+        margin-top: -110px;
+    }
+
+    .cover_img {
+        width: 250px;
+        height: 250px;
+        border-radius: 100%;
+        overflow: hidden;
+        border: 10px solid var(--white-color);
+    }
+    
+    .singer_info {
+        flex: 1;
+        padding: 120px 40px 10px;
+        color: var(--t-text-color);
+
+        .singer_actor {
+            font-weight: 300;
+            line-height: 14px;
+            height: 14px;
+            font-size: 14px;
+        }
+    
+        .singer_name {
+            padding: 10px 0 10px;
+            font-size: 34px;
+            font-weight: bold;
+            height: 34px;
+            line-height: 34px;
+        }
+    
+        .singer_alias {
+            font-size: 0;
+            height: 12px;
+    
+            span {
+                font-size: 12px;
+                display: inline-block;
+                line-height: 12px;
+                height: 12px;
+                padding-right: 5px;
+                color: var(--t-light-color);
+            }
+        }
+        
+        .singer_digital {
+            display: flex;
+            align-items: center;
+            color: var(--t-light-color);
+            font-weight: 300;
+            padding-top: 20px;
+            margin-left: -10px;
+            line-height: 14px;
+    
+            .singer_count {
+                display: inline-block;
+                line-height: 14px;
+                padding: 0 10px;
+                text-align: center;
+
+                em {
+                    display: block;
+                    padding-bottom: 5px;
+                    font-weight: 400;
+                    font-style: normal;
+                }
+            }
+        }
+    }
+
+    .followed {
+        padding: 130px 0 10px;
+
+        span {
+            display: flex;
+            line-height: 16px;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 15px 7px 15px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-weight: 300;
+            font-size: 12px;
+            margin: 0 0 0 10px;
+            transition: all 0.4s;
+            background: var(--btn-background);
+            color: var(--t-light-color);
+        }
+    }
+    
+    .singer_oper {
+        width: 100px;
+        padding-top: 66px;
+        
+    
+        .singer_btn {
+            display: inline-flex;
+            width: 100px;
+            line-height: 20px;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 0;
+            cursor: pointer;
+            color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--t-modal-shadow);
+            background: var(--t-highlight-color);
+            font-weight: 300;
+    
+            .iconfont {
+                margin-right: 5px;
+                color: var(--white-color);
+            }
+    
+            &.active {
+                background: var(--t-primary-light-color);
+            }
+        }
+    }
+
+    .singer_box {
+        padding: 20px 20px 0;
+        margin-bottom: 20px;
+        background: var(--box-background);
+        border-radius: var(--border-radius);
+        box-shadow: var(--t-modal-shadow);
+    }
+
+    .singer_fans {
+        padding-bottom: 20px;
+    }
+
+    .aside_title {
+        position: relative;
+        font-size: 16px;
+        line-height: 16px;
+        padding: 0 0 20px;
+        color: var(--t-text-color);
+
+        &::before {
+            display: inline-block;
+            content: '';
+            width: 3px;
+            height: 16px;
+            margin-right: 5px;
+            background: var(--t-muted-color);
+            vertical-align: top;
+            border-radius: var(--border-radius);
+        }
+    }
+
+    .fans_main {
+        padding: 20px;
+        font-size: 0;
+        background: var(--btn-background);
+    
+        .fans_list {
+            display: flex;
+        }
+    
+        .fans_item {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: -15px;
+            border-radius: 100%;
+            overflow: hidden;
+            border: 2px solid #fff;
+            vertical-align: top;
+    
+            &:hover {
+                z-index: 1;
+            }
+        }
+    
+        .fans_num {
+            padding: 10px 0;
+            font-size: 24px;
+            text-align: center;
+            font-weight: 300;
+    
+            span {
+                display: inline-block;
+                font-size: 14px;
+                color: var(--t-light-color);
+            }
+        }
+    
+        .fans_tips {
+            font-size: 12px;
+            text-align: center;
+            font-weight: 300;
+            color: var(--t-light-color);
+        }
+    }
+
+    .simi_item {
+        display: flex;
+        padding: 15px 20px;
+        margin: 0 -20px;
+        justify-content: space-between;
+    
+        .simi_left {
+            flex: 1;
+            display: inline-flex;
+        }
+    
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            overflow: hidden;
+        }
+    
+        .simi_info {
+            flex: 1;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+    
+        .singer_digital {
+            display: flex;
+            align-items: center;
+            color: var(--t-light-color);
+            font-weight: 300;
+            line-height: 14px;
+    
+            span {
+                display: inline-block;
+                font-size: 12px;
+                line-height: 14px;
+                padding-right: 10px;
+            }
+        }
+    
+        .simi_name {
+            line-height: 14px;
+        }
+    
+        .simi_oper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+    
+            &:hover {
+                color: var(--t-highlight-color);
+            }
+        }
+
+        .singer_btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+    
+        .singer_collect {
+            font-size: 12px;
+            font-weight: 300;
+            cursor: pointer;
+    
+            .iconfont {
+                margin-right: 5px;
+            }
+    
+            &:global {
+                &.active {
+                    color: var(--t-highlight-color);
+                    .iconfont {
+                        color: var(--t-highlight-color);
+                    }
+                }
+            }
+        }
+    
+        &:hover {
+    
+            background: var(--t-muted-background);
+    
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.singer_main {
+    padding: 50px 20px 20px;
+
+    .singer_header {
+        display: flex;
+        align-items: flex-end;
+        font-size: 0;
+        padding-bottom: 10px;
+
+        em {
+            display: inline-block;
+            width: 90px;
+            font-size: 28px;
+            line-height: 28px;
+            font-style: normal;
+        }
+
+        .singer_tab {
+            flex: 1;
+        }
+
+        span {
+            display: inline-block;
+            font-size: 16px;
+            line-height: 16px;
+            margin: 0 10px;
+            color: var(--t-muted-color);
+            cursor: pointer;
+            font-weight: 300;
+
+            &:global(.active) {
+                position: relative;
+                z-index: 1;
+                font-weight: 600;
+
+                &:after {
+                    position: absolute;
+                    content: "";
+                    left: 0;
+                    bottom: 1px;
+                    width: 100%;
+                    height: 6px;
+                    background: var(--t-highlight-color);
+                    z-index: -1;
+                }
+            }
+        }
+
+        .singer_btn {
+            display: inline-flex;
+            line-height: 16px;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 15px 7px 15px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-weight: 300;
+            font-size: 12px;
+            margin: 0 0 0 10px;
+            transition: all 0.4s;
+            background: var(--btn-background);
+            color: var(--t-light-color);
+        }
+
+        .playAll {
+            color: var(--white-color);
+            background: var(--t-highlight-color);
+            
+            :global {
+                .iconfont {
+                    color: var(--white-color);
+                }
+            }
+        }
+
+        :global {
+            .iconfont {
+                margin-right: 5px;
+                color: var(--t-light-color);
+            }
+        }
+    }
+
+    .singer_list {
+
+        .singner_box {
+            display: none;
+        }
+    }
+
+    :global {
+        .hot .hot, .album .album, .mv .mv, .brief .brief  {
+            display: block;
+        }
+    }
+}
+
+.singer_brief {
+    .artist_desc_main {
+        padding-top: 20px;
+    }
+    .introduction {
+        dt {
+            position: relative;
+            line-height: 14px;
+            padding-bottom: 10px;
+            color: var(--t-muted-color);
+            font-weight: 600;
+            font-size: 14px;
+    
+            &::before {
+                display: inline-block;
+                content: '';
+                width: 4px;
+                height: 14px;
+                margin-right: 10px;
+                vertical-align: top;
+                border-radius: 4px;
+                background: var(--t-highlight-color);
+            }
+        }
+    
+        dd {
+            padding-bottom: 20px;
+            font-size: 12px;
+            line-height: 25px;
+            white-space: pre-line;
+            color: var(--t-text-color);
+            font-weight: 300;
+        }
+    }
+    
+}

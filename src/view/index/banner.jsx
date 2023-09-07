@@ -1,0 +1,73 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Skeleton, Image } from 'antd';
+import { getBanner } from '@apis/http.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import {  Pagination, Autoplay } from 'swiper/modules';
+import './scss/banner.scss';
+
+const typeObj = {
+    1: 'song',   // 单曲
+    10: 'album',// 专辑
+    100: 'playlist',// 歌单
+    104: 'mv',// MV
+    3000: 'url', //外链
+};
+
+export default function Banner() {
+    const navigate = useNavigate();
+    const [ list, setList ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
+
+    // 点击轮播图事件
+    const pathHandler = useCallback((info) => {
+        return () => {
+            if (info.targetType == 3000) {
+                window.open(info.url, '_blank')
+            } else {
+                if (typeObj[info.targetType]) {
+                    navigate(`/${typeObj[info.targetType]}?id=${info.targetId}`);
+                }
+            }
+        }
+    });
+
+    useEffect(() => {
+        (async()=> {
+            // 获取轮播图数据
+            const { data: res } = await getBanner()
+
+            if (res.code !== 200) {
+                return proxy.$msg.error('数据请求失败')
+            }
+        
+            setList(res.banners);
+            setLoading(false);
+        })();
+    }, []);
+
+    return (
+        <div className="banner">
+            {
+                <Skeleton loading={loading} active paragraph={false} className='Skeleton-banner'>
+                    <Swiper
+                        spaceBetween={50}
+                        slidesPerView={3}
+                        autoplay={{ delay: 3000 }}
+                        pagination={{ clickable: true }}
+                        modules={[Pagination, Autoplay]}
+                        className="banner_wrap"
+                    >
+                        { 
+                            list.map(item => (
+                                <SwiperSlide key={item.imageUrl} onClick={pathHandler(item)}>
+                                    <Image className='banner_img' preview={false} src={item.imageUrl} />
+                                </SwiperSlide>
+                            ))
+                        }
+                    </Swiper>
+                </Skeleton>
+            }
+        </div>
+    )
+}

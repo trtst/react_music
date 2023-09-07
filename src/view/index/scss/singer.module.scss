@@ -1,0 +1,49 @@
+.singer {
+    width: 440px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--t-modal-shadow);
+    background: var(--box-background);
+    border-radius: var(--border-radius);
+
+    .singerTitle {
+        display: inline-block;
+        padding: 30px 0 10px;
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 400;
+        color: var(--t-text-color);
+    }
+
+    .box {
+        display: flex!important;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: space-between;
+    }
+
+    .singerMain {
+        font-size: 0;
+        padding-top: 20px;
+
+        .box {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .avatar {
+            font-size: 0;
+            margin-bottom: 20px;
+        }
+
+        :global {
+            .ant-skeleton {
+                margin-bottom: 20px;
+            }
+
+            .ant-carousel {
+                
+            }
+        }
+    }
+}

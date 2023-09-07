@@ -1,0 +1,22 @@
+:global {
+    .car-box {
+        display: flex;
+    }
+}
+.dj {
+    flex: 1;
+    padding: 0 20px;
+    margin: 0 20px 20px 0;
+    box-shadow: var(--t-modal-shadow);
+    background: var(--box-background);
+    border-radius: var(--border-radius);
+
+    .djTitle {
+        display: inline-block;
+        padding: 30px 0 10px;
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 400;
+        color: var(--t-text-color);
+    }
+}

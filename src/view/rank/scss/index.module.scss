@@ -1,0 +1,282 @@
+.rank {
+    display: flex;
+    padding: 35px 0 0 0;
+}
+
+.rankMain {
+    flex: 1;
+    padding-bottom: 45px;
+}
+
+.cover {
+    display: flex;
+    box-shadow: var(--t-modal-shadow);
+    background: var(--box-background);
+    border-radius: var(--border-radius);
+
+    .coverImg {
+        display: flex;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+        overflow: hidden;
+        flex-shrink: 0;
+    
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .coverInfo {
+        flex: 1;
+        padding: 20px 20px 10px;
+        font-size: 0;
+        border-radius: var(--border-radius);
+    
+        .coverHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .coverTitle {
+            flex: 1;
+            font-size: 24px;
+            height: 24px;
+            line-height: 24px;
+            color: var(--t-muted-color);
+    
+            span {
+                display: inline-block;
+                padding-left: 10px;
+                font-weight: normal;
+                line-height: 22px;
+                font-size: 14px;
+                font-weight: 300;
+                color: var(--t-light-color);
+            }
+        }
+    }
+
+    .coverAuthor {
+        display: flex;
+        align-items: center;
+        padding: 15px 0 5px;
+    
+        .coverAvatar {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 100%;
+            vertical-align: top;
+            flex-shrink: 0;
+        }
+    
+        .coverName, .coverDate {
+            display: inline-block;
+            margin: 0 5px;
+            font-size: 14px;
+            font-weight: 300;
+            color: var(--t-muted-color);
+        }
+    
+        .coverDate {
+            color: var(--t-light-color);
+        }
+    }
+
+    .coverPlayCount, .coverCollect, .coverComment {
+        display: inline-block;
+        margin-right: 20px;
+        line-height: 16px;
+        font-size: 14px;
+        font-weight: 300;
+        color: var(--t-light-color);
+    
+        i {
+            vertical-align: top;
+            color: var(--t-light-color);
+        }
+    }
+
+    .coverDesc {
+        position: relative;
+    
+        .coverDescTitle {
+            margin: 20px 0 5px;
+            line-height: 14px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--t-light-color);
+        }
+    
+        .coverDescText {
+            line-height: 22px;
+            font-size: 14px;
+            color: var(--t-light-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+            font-weight: 300;
+        }
+    }
+}
+
+
+.songMain {
+    position: relative;
+    // padding: 0 20px;
+    margin-top: 25px;
+    // background: var(--box-background);
+    border-radius: var(--border-radius);
+    // box-shadow: var(--t-modal-shadow);
+
+    .songHeader {
+        display: flex;
+        padding: 20px 0 10px;
+
+        h4 {
+            flex: 1;
+            font-size: 20px;
+            line-height: 30px;
+            font-weight: 400;
+            color: var(--t-muted-color);
+
+            em {
+                display: inline-block;
+                padding-left: 10px;
+                font-size: 12px;
+                line-height: 12px;
+                font-style: normal;
+                font-weight: 300;
+                color: var(--t-light-color);
+                vertical-align: baseline;
+            }
+        }
+
+        span {
+            display: flex;
+            line-height: 16px;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            padding: 7px 20px 7px 16px;
+            cursor: pointer;
+            margin: 0 0 0 15px;
+            transition: all .4s;
+            background: var(--btn-background);
+            color: var(--t-light-color);
+
+            i {
+                margin-right: 5px;
+                color: var(--t-light-color);
+            }
+        }
+
+        .playAll {
+            color: var(--white-color);
+            background: var(--t-highlight-color);
+
+            i {
+                color: var(--white-color);
+            }
+        }
+
+        .collect.active, .collect.active i {
+            color: var(--color-text-height);
+        }
+    }
+}
+
+.rankSide {
+    width: $sideWidth;
+    padding-bottom: 25px;
+    flex-shrink: 0;
+    padding-left: $paddingW;
+
+    .sideItem {
+        font-size: 0;
+        padding: 0 10px 10px;
+        margin-bottom: 20px;
+        // box-shadow: var(--t-modal-shadow);
+        // background: var(--box-background);
+        border-radius: var(--border-radius);
+
+        .sideItemTitle {
+            font-size: 16px;
+            line-height: 16px;
+            padding: 0 10px 20px;
+            color: var(--t-text-color);
+    
+            &::before {
+                display: inline-block;
+                content: '';
+                width: 3px;
+                height: 16px;
+                margin-right: 5px;
+                background: var(--t-muted-color);
+                vertical-align: top;
+                border-radius: var(--border-radius);
+            }
+        }
+    
+        .sideItemMain {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    
+        .sideItemBox {
+            display: flex;
+            width: calc(50% - 20px);
+            padding: 10px;
+            cursor: pointer;
+
+            &:global(.active ){
+                background: var(--t-highlight-color);
+                border-radius: var(--border-radius);
+    
+                .itemTitle, .itemTime {
+                    color: var(--white-color);
+                }
+            }
+        }
+    
+        .itemImg {
+            flex-shrink: 0;
+            width: 29px;
+            height: 29px;
+            border-radius: var(--border-radius);
+        }
+    
+        .itemInfo {
+            width: calc(100% - 50px);
+            padding-left: 5px;
+        }
+    
+        .itemTitle{
+            font-size: 12px;
+            line-height: 12px;
+            padding-bottom: 5px;
+            color: var(--t-muted-color);
+            width: 100%;
+            font-weight: 400;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
+    
+        .itemTime {
+            font-size: 12px;
+            line-height: 12px;
+            font-weight: 300;
+            color: var(--t-light-color);
+        }
+    }
+}

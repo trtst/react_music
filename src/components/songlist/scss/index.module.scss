@@ -1,0 +1,272 @@
+.songListMain {
+
+    .listHeader {
+        display: flex;
+        line-height: 50px;
+        border-bottom: 1px solid #EBEEF5;
+        font-weight: 400;
+        color: var(--t-text-color);
+    }
+
+    .columnIndex {
+        width: 60px;
+        line-height: 50px;
+        padding-left: 10px;
+    }
+    .columnSong {
+        display: flex;
+        flex: 2;
+        width: 0;
+        padding-right: 10px;
+        overflow: hidden;
+        align-items: center;
+    }
+    .columnSinger {
+        flex: 1.5;
+        width: 0;
+        padding-right: 10px;
+        overflow: hidden;
+    }
+    .columnAlbum {
+        flex: 1;
+        width: 0;
+    }
+    .columnTime {
+        width: 100px;
+        padding-right: 10px;
+        text-align: right;
+    }
+
+    .listItem {
+        display: flex;
+        align-items: flex-start;
+        line-height: 50px;
+        font-weight: 300;
+        padding: 0;
+        margin-bottom: -1px;
+        color: var(--t-text-color);
+
+        :global {
+            .iconfont {
+                margin-left: 10px;
+                font-size: 22px;
+                cursor: pointer;
+                vertical-align: middle;
+        
+                &:hover {
+                    color: var(--t-highlight-color);
+                }
+            }
+
+            .icon-vip {
+                font-size: 30px;
+                color: var(--t-highlight-color);
+            }
+
+            .ant-skeleton-button {
+                margin-top: 13px;
+            }
+        }
+    
+        .itemIndex {
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+        }
+    
+        .playicon {
+            display: none;
+            margin-left: 0;
+        }
+    
+        .songName {
+
+            a {
+                display: inline-block;
+                max-width: 75%;
+                line-height: 50px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                vertical-align: top;
+            }
+    
+            i:hover {
+                color: var(--t-highlight-color);
+                cursor: pointer;
+            }
+    
+            .mvName {
+                text-decoration: none;
+            }
+        }
+    
+        .singer, .album {
+            display: inline-block;
+            max-width: 100%;
+            line-height: 50px;
+            height: 50px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: top;
+
+            span {
+                display: inline-block;
+                font-size: 14px;
+                line-height: 14px;
+                padding: 0 10px;
+                color: var(--t-light-color);
+                opacity: .6;
+
+                &:last-child {
+                    display: none;
+                }
+            }
+        }
+
+        .songSinger {
+            display: inline-block;
+            font-size: 14px;
+            line-height: 50px;
+        }
+    
+        .time {
+            line-height: 50px;
+        }
+    
+        .oper {
+            display: none;
+            line-height: 50px;
+        }
+    
+        &:global(.active) {
+            color: var(--t-highlight-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--t-modal-shadow);
+            background: var(--s-background);
+    
+            .itemIndex, .playicon {
+                display: none;
+            }
+    
+            .audioIcon {
+                display: flex;
+            }
+    
+            &:hover {
+                .playicon {
+                    display: block;
+                    color: var(--t-highlight-color);
+                }
+                .audioIcon {
+                    display: none;
+                }
+            }
+    
+        }
+    
+        &:hover {
+            border-radius: var(--border-radius);
+            box-shadow: var(--t-modal-shadow);
+            background: var(--s-background);
+    
+            .time, .itemIndex {
+                display: none;
+            }
+    
+            .oper {
+                display: flex;
+                justify-content: flex-end;
+            }
+    
+            .playicon {
+                display: block;
+            }
+        }
+    
+        &:global(.disable) {
+            color: var(--t-light-color);
+            opacity: .6;
+    
+            a {
+                color: var(--t-light-color);
+                opacity: .6;
+            }
+    
+            .playicon, .oper {
+                display: none;
+            }
+    
+            .itemIndex, .time {
+                display: block;
+            }
+        }
+    
+        &:global(.vip) {
+            // color: var(--t-highlight-color);
+    
+            a {
+                // color: var(--t-highlight-color);
+            }
+        }
+    }
+
+    .audioIcon {
+        display: none;
+        width: 20px;
+        height: 18px;
+        margin: 16px 2px;
+        overflow: hidden;
+    
+        .column {
+            width: 2px;
+            height: 100%;
+            margin-left: 2px;
+            background-color: var(--t-highlight-color);
+            -webkit-animation: play .9s linear infinite alternate;
+            animation: play .9s linear infinite alternate
+        }
+    }
+}
+
+.mini {
+    .list_scroll {
+        height: 350px;
+        -moz-user-select:none; /*火狐*/
+        -webkit-user-select:none; /*webkit浏览器*/
+        -ms-user-select:none; /*IE10*/
+        -khtml-user-select:none; /*早期浏览器*/
+        user-select:none;
+        overflow-y: hidden;
+    }
+
+    .list_main {
+        transition: transform 0.3s;
+    }
+}
+
+@-webkit-keyframes play {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    to {
+        -webkit-transform: translateY(75%);
+        transform: translateY(75%)
+    }
+}
+
+@keyframes play {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    to {
+        -webkit-transform: translateY(75%);
+        transform: translateY(75%)
+    }
+}
+

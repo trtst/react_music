@@ -1,0 +1,221 @@
+.playbar_main  {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.paly_bar {
+    position: relative;
+    bottom: 0;
+    left: calc($menuWidth + $paddingW);
+    z-index: 5;
+    width: calc(100% - $menuWidth - $paddingW - $paddingW);
+    height: 70px;
+    background: var(--box-background);
+    box-shadow: var(--t-modal-shadow);
+}
+
+.audio_progress {
+    position: absolute;
+    top: -5px;
+    z-index: 9;
+    width: 100%;
+    margin: 0;
+}
+
+.play_bar_main {
+    display: flex;
+    font-size: 0;
+    line-height: 0;
+    height: 70px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin: 0 auto;
+
+    .bar_l {
+        display: flex;
+        width: 300px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bar_cover_img {
+        width: 50px;
+        height: 50px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--t-modal-shadow);
+    }
+
+    .bar_name {
+        flex: 1;
+        font-size: 0;
+        padding: 0 20px;
+        overflow: hidden;
+
+        .song_name {
+            display: block;
+            margin-bottom: 20px;
+            line-height: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        p {
+            line-height: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .song_author {
+            line-height: 12px;
+            font-size: 12px;
+            color: var(--t-light-color);
+        }
+    }
+
+    .bar_time {
+        line-height: 50px;
+        font-size: 14px;
+        color: #606266;
+        text-align: center;
+    }
+
+    .bar_control {
+        display: flex;
+        padding: 15px 0;
+        line-height: 1;
+        align-items: center;
+        justify-content: center;
+
+        :global {
+            .iconfont {
+                margin: 0 20px;
+                font-size: 25px;
+                cursor: pointer;
+                color: #666;
+            }
+    
+            .icon-audio-play, .icon-audio-pause {
+                font-size: 40px;
+                font-weight: bold;
+                color: var(--t-highlight-color);
+            }
+        }
+    }
+
+    .bar_oper {
+        position: relative;
+        display: flex;
+        font-size: 0;
+        line-height: 50px;
+        align-items: center;
+        justify-content: center;
+
+        :global {
+            .iconfont {
+                margin-left: 10px;
+                font-size: 20px;
+                cursor: pointer;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .volume_main {
+        flex: 1;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+
+        .volume_line {
+            width: 150px;
+            margin: 0 10px;
+        }
+    }
+
+    .lyric {
+        display: inline-block;
+        padding: 18px 5px 18px 15px;
+        font-size: 18px;
+        line-height: 18px;
+        vertical-align: top;
+        color: var(--t-light-color);
+        cursor: pointer;
+    }
+
+    .playlist_main {
+        position: relative;
+        padding-right: 20px;
+
+        .playlist_num {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 24px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 12px;
+            color: var(--t-muted-color);
+        }
+    }
+}
+
+.pop_main {
+    width: 550px;
+    min-height: 420px;
+
+    .pop_header {
+        display: flex;
+        line-height: 40px;
+
+        span {
+            display: inline-block;
+            flex: 1;
+        }
+
+        em {
+            display: inline-block;
+            padding-left: 10px;
+            font-size: 12px;
+            line-height: 14px;
+            font-style: normal;
+            font-weight: normal;
+            color: #666;
+            vertical-align: baseline;
+        }
+
+        .del_songlist {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+
+            :global(.iconfont) {
+                font-size: 20px;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.lyric_main {
+    width: 400px;
+    height: 420px;
+
+    .lyric_header {
+        line-height: 30px;
+    }
+}
+
+:global{
+    .ant-popover {
+        position: fixed;
+    }
+}

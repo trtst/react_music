@@ -1,0 +1,121 @@
+
+.header {
+    position: fixed;
+    right: 0;
+    z-index: 111;
+    width: calc(100% - $menuWidth - 80px);
+    display: flex;
+    padding: 0 40px;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80px;
+    // border-radius: var(--border-radius);
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, .1);
+    background: var(--main-background);
+}
+
+.user-info {
+    padding: 0 0 0 20px;
+    
+    :global {
+        .ant-dropdown-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+
+    .avatar {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .logined {
+        display: flex;
+        align-items: center;
+
+        span {
+            display: inline-block;
+            font-weight: 300;
+            padding: 0 10px;
+            cursor: pointer;
+        }
+
+        .iconfont {
+            color: var(--color-text-main);
+            vertical-align: top;
+        }
+    }
+
+    .login-btn {
+        font-size: 16px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.toggle-theme {
+    padding-left: 20px;
+
+    .theme-icon {
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+.theme-box {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background: var(--btn-background);
+    box-shadow: inset var(--t-modal-shadow);
+
+    &::after {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: var(--border-radius);
+        background: var(--box-background);
+        transition: all .3s ease-in;
+    }
+
+    &:global(.active) {
+        .icon-dark {
+            opacity: 0;
+        }
+
+        .icon-light {
+            opacity: 1;
+        }
+
+        &::after {
+            left: 100%;
+            margin-left: -18px;
+        }
+    }
+
+    .iconfont {
+        width: 20px;
+        text-align: center;
+        transition: opacity .2s ease-in;
+    }
+
+    .icon-light {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,68 @@
+.mv {
+    padding-top: 35px;
+
+    .mv_filter {
+        
+    }
+
+    .filter_header {
+        :global {
+            .iconfont {
+                display: inline-flex;
+                width: 32px;
+                height: 32px;
+                margin-right: 10px;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                color: var(--t-text-color);
+                vertical-align: top;
+            }
+        }
+        
+        span {
+            display: inline-block;
+            font-size: 16px;
+            line-height: 32px;
+            font-weight: bold;
+        }
+
+        em {
+            font-size: 12px;
+            font-style: normal;
+            color: var(--t-muted-color);
+        }
+    }
+
+    .filter_main {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0;
+        padding: 10px 0;
+
+        em {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            font-size: 12px;
+            font-style: normal;
+            padding: 5px 0;
+            margin-right: 10px;
+            border: 1px solid var(--t-light-color);
+            border-radius: 16px;
+            width: 70px;
+            color: var(--t-light-color);
+            text-align: center;
+            font-style: normal;
+            cursor: pointer;
+
+            &:global {
+                &.active {
+                    color: var(--white-color);
+                    background: var(--t-highlight-color);
+                    border: 1px solid var(--t-highlight-color);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,123 @@
+:root {
+    --white-color: #fff; 
+    --black-color:#0c0c0d; 
+    --gray-color: #18181B;
+
+    color-scheme: light dark;
+
+    --t-primary-color: #11b0a0;
+    --t-muted-background: fadeout(hsla(172, 48%, 53%, 1), 85%);
+    --t-text-color: var(--black-color);
+    --t-main-color: #555;       
+    --t-muted-color: #505a68;       
+    --t-light-color: #89878a;    
+  
+    --t-highlight-color: var(--t-primary-color);
+    --t-container-background: #fbfbfb;
+
+    --btn-background: rgba(240, 240, 240, .7);
+    --box-background: var(--white-color);
+    --main-background: var(--white-color);
+    --s-background: var(--white-color); 
+
+    --t-modal-shadow: 0 0px 10px rgba(0, 0, 0, .1);
+    --border-radius: 6px;
+
+    --menu-width: 260px;
+    --side-width: 380px;
+    --padding-width: 40px;
+}
+
+* { 
+    padding: 0; 
+    margin: 0; 
+}
+html, body { 
+    height: 100%; 
+    font-size: 14px;
+    color: var(--t-text-color); 
+}
+a { 
+    text-decoration: none;  
+    color: var(--color-text-main);
+}
+a:hover { 
+    text-decoration:underline;
+}
+img { 
+    border:none;
+}
+ol,ul,li { 
+    list-style:none;
+}
+*,*:focus,*:hover, input{ 
+    outline:none; 
+}
+// 滚动条样式
+::-webkit-scrollbar { 
+    width: 0px;
+}
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background: transparent;
+}
+::-webkit-scrollbar-thumb { 
+    border-radius: 8px; 
+    background: var(--t-light-color);
+}
+::-webkit-scrollbar-thumb:hover { 
+    background: var(--t-muted-color);
+}
+
+// 骨架屏/其他图片占位符需要提供宽高，所以要精确计算
+// 页面中心区域的宽度
+$menuWidth: var(--menu-width);
+$sideWidth: var(--side-width);
+$paddingW: var(--padding-width);
+$containerWidth: calc(100vw - $menuWidth - $paddingW - $paddingW);
+$mainWidth: calc($containerWidth - $sideWidth - $paddingW);
+
+
+// 计算出当前DOM的高度 = 实际高度 / 实际宽度 * 高度
+@mixin calcHeight($w, $ow, $oh) {
+    height: calc($w * $oh / $ow);
+}
+
+// 页面布局的宽高
+#root, .layout { width: 100vw; min-height: 100%; }
+
+.main {
+    // TIPS-02: flex下必现设置宽度， 如果不设置宽度，swiper的列表宽度会变得非常大，不确定引起原因
+    width: calc(100vw - $menuWidth);
+    padding-left: $menuWidth;
+    overflow: auto;
+    background: var(--main-background);
+
+    .container {
+        padding: 80px $paddingW 70px;
+    }
+}
+
+/* 监听操作系统主题模式 */
+@media (prefers-color-scheme: light) {
+    :root {
+        --main-background: var(--white-color);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --main-background: var(--black-color);
+        --box-background: var(--gray-color);
+        --t-text-color: var(--white-color);
+        --t-muted-color: var(--white-color)
+    }
+}
+
+@media screen and ( max-width: 1450px) {
+    :root {
+        --menu-width: 200px;
+        --side-width: 300px;
+        --padding-width: 20px;
+    }
+}

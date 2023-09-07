@@ -1,0 +1,42 @@
+.nav {
+    padding-top: 50px;
+
+    li {
+        display: block;
+        padding: 10px;
+        margin: 10px 20px;
+        border-radius: var(--border-radius);
+        color: var(--t-text-color);
+        text-align: left;
+        cursor: pointer;
+
+        &.is-active {
+            color: var(--t-highlight-color);
+            font-weight: 400;
+            // border-right: 4px solid var(--t-highlight-color);
+            background: var(--t-muted-background);
+
+            .iconfont {
+                color: var(--t-highlight-color);
+            }
+        }
+
+        span {
+            display: inline-block;
+            font-size: 14px;
+            line-height: 32px;
+        }
+    }
+
+    .iconfont {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        margin-right: 20px;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: var(--t-text-color);
+        vertical-align: top;
+    }
+}

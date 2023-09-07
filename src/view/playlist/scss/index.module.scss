@@ -1,0 +1,109 @@
+.playList {
+    padding: 35px 0 0 0;
+}
+
+.card {
+    height: 218px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--t-modal-shadow);
+    background: var(--box-background);
+    border-radius: var(--border-radius);
+}
+
+
+.filter {
+    padding: 10px 0 10px 20px;
+
+    .filterItem {
+        display: flex;
+        align-items: center;
+        font-size: 0;
+        padding: 5px 0;
+    
+        .filterTitle {
+            display: inline-block;
+            font-size: 14px;
+            line-height: 14px;
+            padding: 0 20px 0 0;
+            color: var(--t-muted-color);
+            font-weight: 300;
+            cursor: pointer;
+            border-right: 1px solid #eee;
+        }
+    
+        .filterBox {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+    
+            span {
+                display: inline-block;
+                width: 70px;
+                font-size: 14px;
+                line-height: 14px;
+                height: 14px;
+                margin: 5px 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: pointer;
+                text-align: center;
+    
+                &:hover, &:global(.active) {
+                    color: var(--t-highlight-color);
+                }
+            }
+        }
+    }
+}
+
+.listHead {
+    display: flex;
+    padding: 15px 0 0;
+
+    h2 {
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 400;
+    }
+
+    .filterClose {
+        display: inline-block;
+        line-height: 16px;
+        vertical-align: top;
+        cursor: pointer;
+    }
+
+    .type {
+        padding: 5px 40px;
+
+        span {
+            position: relative;
+            z-index: 9;
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            margin-right: 34px;
+            font-weight: 300;
+            color: #333;
+            cursor: pointer;
+
+            &:global(.active) {
+                font-weight: 600;
+                color: var(--t-text-color);
+
+                &::after {
+                    position: absolute;
+                    content: "";
+                    left: 0;
+                    bottom: 1px;
+                    width: 100%;
+                    height: 6px;
+                    background: var(--t-highlight-color);
+                    z-index: -1;
+                }
+            }
+        }
+    }
+}

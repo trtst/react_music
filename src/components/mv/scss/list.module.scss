@@ -1,0 +1,41 @@
+.mvList {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    font-size: 0;
+
+    .item {
+        flex: 30%;
+        max-width: calc(100% / 5 - 20px);
+        margin: 20px 0 0;
+        border-radius: 4px;
+    }
+
+    :global(.row_4) {
+        max-width: calc(100% / 4 - 20px);
+    }
+
+    .info {
+        position: relative;
+        padding: 15px 0 0;
+    }
+
+    :global {
+        .skeleton-img {
+            width: 100%!important;
+            height: 123px!important;
+
+            .iconfont {
+                font-size: 40px;
+                color: #999;
+            }
+        }
+        
+        .ant-skeleton-button {
+            height: 20px!important;
+            margin-bottom: 3px;
+        }
+    }
+}

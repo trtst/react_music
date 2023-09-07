@@ -1,0 +1,46 @@
+@import 'swiper/scss';
+@import 'swiper/scss/pagination';
+
+$w: calc(($containerWidth - 90px) / 3);
+
+.banner {
+    width: 100%;
+    padding-bottom: 30px;
+    font-size: 0;
+}
+
+.banner_wrap {
+    position: relative;
+    padding: 35px 0;
+    width: 100%;
+    @include calcHeight($w, 1080, 400);
+
+    .banner_img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .swiper-slide, .img {
+        @include calcHeight($w, 1080, 400);
+    }
+}
+
+// 骨架屏
+.Skeleton-banner {
+    width: 100%;
+    font-size: 0;
+    
+    .ant-skeleton-content {
+        position: relative;
+        padding: 35px 0;
+        width: 100%;
+        @include calcHeight($w, 1080, 400);
+    
+        .ant-skeleton-title {
+            @include calcHeight($w, 1080, 400);
+        }
+    }
+}
+
+  

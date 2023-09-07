@@ -1,0 +1,23 @@
+.sidebar {
+    position: fixed;
+    z-index: 100;
+    width: $menuWidth;
+    height: 100%;
+    text-align: center;
+    font-size: 0;
+    box-shadow: var(--t-modal-shadow);
+    background: var(--main-background);
+
+    .logo {
+        display: inline-block;
+        height: 60px;
+        padding: 20px 0 0;
+        margin: 0 auto;
+        font-size: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

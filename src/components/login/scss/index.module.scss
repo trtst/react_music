@@ -1,0 +1,12 @@
+.loginMain {
+    height: 250px;
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+
+    .loginBtn {
+        cursor: pointer;
+    }
+}

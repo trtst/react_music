@@ -1,0 +1,59 @@
+.lyrics_main {
+    position: relative;
+    min-height: 120px;
+    height: 100%;
+    overflow-y: auto;
+    transition: all 1.5s ease-in-out;
+}
+
+.lyrics {
+    position: absolute;
+    font-size: 0;
+    // transform: translateY(0);
+    transition: top 1.5s ease-in-out;
+
+    :global{
+        p {
+            margin: 0;
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: 300;
+    
+            &.active {
+                color: var(--t-highlight-color);
+            }
+        }
+    }
+}
+.lyric_empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100px;
+    font-size: 14px;
+    color: var(--t-highlight-color);
+
+    ~ .more_lyric {
+        display: none;
+    }
+}
+.page_lyrics {
+    color: #666;
+    overflow: hidden;
+
+    .lyric_empty {
+        justify-content: left;
+    }
+
+    &.fullLyrics {
+        max-height: none;
+    }
+}
+
+.lyric_more span {
+    display: inline-block;
+    line-height: 30px;
+    cursor: pointer;
+    color: var(--t-highlight-color);
+}

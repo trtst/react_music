@@ -1,0 +1,44 @@
+.albumList {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+    padding-bottom: 20px;
+    margin: 0 -10px;
+    font-size: 0;
+
+    .item {
+        display: flex;
+        flex: calc(100% / 3 - 20px);
+        margin: 20px 10px 0;
+        border-radius: var(--border-radius);
+        background: var(--t-container-background);
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        flex: 3;
+        padding: 10px;
+        margin-left: 30px;
+        overflow: hidden;
+    }
+
+    :global {
+        .ant-skeleton {
+            display: block!important;
+        
+            .ant-skeleton-image {
+                width: 120px;
+                height: 120px;
+                border-radius: 4px;
+            }
+        
+            .ant-skeleton-button {
+                height: 20px!important;
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+.pwd {
+    font-size: 0;
+
+    .title {
+        display: inline-block;
+        padding-bottom: 10px;
+        font-size: 18px;
+        line-height: 18px;
+        font-weight: 500;
+        color: var(--t-text-color);
+    }
+
+    .pwdMain {
+        padding-top: 20px;
+    }
+
+    .ipt {
+        border-width: 0;
+        border-bottom: 1px solid var(--t-light-color);
+        border-radius: 0;
+        height: 39px;
+
+        &:hover, &:focus {
+            border-inline-end-width: 0!important;
+            box-shadow: none!important;
+        }
+    }
+
+    .forgetPwd {
+        height: 18px;
+        line-height: 18px;
+        text-align: right;
+        font-size: 12px;
+        color: #909090;
+    }
+
+    .submit {
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 0;
+        font-weight: 300;
+    }
+
+    :global {
+        .ant-form-item-explain-error {
+            font-size: 12px;
+            line-height: 24px;
+        }
+
+        .ant-input-affix-wrapper-focused {
+            border-inline-end-width: 0!important;
+            box-shadow: none!important;
+        }
+    }
+}
