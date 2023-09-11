@@ -153,6 +153,11 @@ const getHotDj = ({ limit = 30, offset = 0 }) => { return api.get(`/dj/hot?limit
 
 // 歌词
 const lyrics = ({ id = '' }) => { return api.get(`/lyric?id=${id}`, {}) }
+
+// 搜索
+const search = ({ keywords = '' }) => { return api.get(`/search?keywords=${keywords}`, {}) }
+const serachSuggest = ({ keywords = '' }) => { return api.get(`/search/suggest?keywords=${keywords}`, {}) }
+
 export {
     getQRkey,
     createQR,
@@ -216,5 +221,8 @@ export {
 
     getHotDj,
 
-    lyrics
+    lyrics,
+
+    search,
+    serachSuggest
 }

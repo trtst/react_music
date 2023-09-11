@@ -40,6 +40,7 @@
 
 #### React && Vue
 1. react没有多 Tab 页缓存功能实现类似keep-alive
+2. react没有官方的transition组件，需要安装第三方插件
 
 #### Antd && element-plus的特点
 

@@ -1,0 +1,417 @@
+.song {
+    display: flex;
+    padding: 35px 0 0 0;
+
+    .song_main {
+        flex: 1;
+        display: flex;
+    
+        .song_l {
+            width: var(--side-width);
+            padding-right: 30px;
+        }
+    
+        .song_m {
+            flex: 1;
+        }
+    }    
+
+    .song_aside {
+        width: $sideWidth;
+        padding-bottom: 25px;
+        flex-shrink: 0;
+        padding-left: $paddingW;
+    }
+}
+
+.cover {
+    position: relative;
+    width: 100%;
+    margin-bottom: 50px;
+
+    .cover_stylus {
+        position: absolute;
+        right: 0;
+        top: -30px;
+        z-index: 3;
+        transform: rotate(-90deg);
+    }
+
+    .cover_img {
+        position: relative;
+        z-index: 2;
+        width: 80%;
+        height: 80%;
+        font-size: 0;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .cover_play_img {
+        position: absolute;
+        top: 0;
+        left: 70px;
+        z-index: 1;
+        width: 100px;
+        height: 100px;
+        padding: calc((80% - 100px - 20px) / 2);
+        margin: 10px;
+        font-size: 0;
+        background: url('@/assets/img/disc.png') no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        box-shadow: 0 0px 10px rgb(0 0 0 / 50%);
+        border-radius: 100%;
+        animation: soundPaying 15s linear infinite;
+        animation-play-state: paused;
+
+        img {
+            width: 100%;
+            border-radius: 100%;
+            animation: soundPaying 15s linear infinite;
+            animation-play-state: paused;
+        }
+
+        &:global(.active) {
+            animation-play-state: running;
+
+            .cover-stylus {
+                transform: rotateZ(0);
+            }
+
+            img {
+                animation-play-state: running;
+            }
+        }
+    }
+}
+
+.song_oper {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0;
+
+    .play_btn {
+        display: flex;
+        line-height: 16px;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        padding: 7px 16px 7px 12px;
+        cursor: pointer;
+        transition: all 0.4s;
+        background: var(--btn-background);
+        color: var(--t-light-color);
+        font-size: 12px;
+
+        .iconfont {
+            margin-right: 5px;
+        }
+    }
+
+    .play_all {
+        color: var(--white-color);
+        background: var(--t-highlight-color);
+
+        .iconfont {
+            color: var(--white-color);
+        }
+    }
+}
+
+.simi_song {
+
+    .song_title {
+        color: var(--t-muted-color);
+        padding: 30px 0 5px;
+        font-weight: 400;
+    }
+    .item_name {
+        line-height: 20px;
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--t-text-color);
+    }
+
+    .item_author {
+        font-size: 0;
+
+        a {
+            font-weight: 300;
+            font-size: 12px;
+            color: var(--t-muted-color);
+        }
+    }
+
+    .simi_item {
+        display: flex;
+        border-bottom: 1px solid #f2f2f2;
+
+        &:last-child {
+            border: 0;
+        }
+    }
+
+    .item_info {
+        flex: 1;
+        padding-top: 5px;
+    }
+
+    .song_status {
+        line-height: 48px;
+
+        i {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    }
+}
+
+.sidebar_box {
+    padding: 20px 20px 0;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--t-modal-shadow);
+
+
+    .aside_title {
+        font-size: 16px;
+        line-height: 16px;
+        padding: 0 0 20px;
+        color: var(--t-text-color);
+
+        &::before {
+            display: inline-block;
+            content: '';
+            width: 3px;
+            height: 16px;
+            margin-right: 5px;
+            background: var(--t-muted-color);
+            vertical-align: top;
+            border-radius: var(--border-radius);
+        }
+    }
+
+    .aside_main {
+        .playlist_cover {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    
+        .playlist_item {
+            display: flex;
+            padding-bottom: 20px;
+        }
+    
+        .playlist_info {
+            flex: 1;
+            padding-left: 10px;
+        }
+    
+        .playlist_name {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+            cursor: pointer;
+        }
+    
+        .playlist_author {
+            height: 20px;
+            line-height: 20px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+    
+            a {
+                color: #666;
+            }
+        }
+    }
+}
+
+.song_info_head {
+    display: flex;
+    padding-top: 40px;
+
+    .song_title {
+        font-size: 34px;
+        font-weight: bold;
+        height: 34px;
+        line-height: 34px;
+    }
+
+    .iconfont {
+        margin-left: 10px;
+        font-size: 24px;
+        color: var(--t-highlight-color);
+    }
+
+    .song_mv {
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .icon-vip {
+        font-size: 32px;
+    }
+}
+
+.lyric {
+    height: 600px;
+}
+
+.comments {
+    padding-top: 20px;
+}
+
+.song_related {
+    display: flex;
+    font-size: 0;
+    padding: 30px 0;
+    color: var(--t-light-color);
+
+    .song_author, .song_album {
+        font-size: 14px;
+        line-height: 14px;
+        font-weight: 300;
+        padding-right: 20px;
+    }
+
+    a {
+        display: inline-block;
+        line-height: 14px;
+        font-weight: 400!important;
+        color: var(--t-text-color);
+    }
+}
+
+.mlog_item {
+    position: relative;
+    display: block;
+    font-size: 0;
+
+    .mlog_img {
+        display: flex;
+        align-items: center;
+        position: relative;
+        height: 140px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+
+        :global(.icon-mvlist) {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 3;
+            font-size: 60px;
+            text-align: center;
+            color: #fff;
+            opacity: 0;
+            margin-top: 35px;
+            transform: scale(0.5);
+            transition: all 0.4s linear;
+        }
+    }
+
+    .mlog_cover {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        transition: all 0.4s linear;
+    }
+
+    .mlog_time {
+        position: absolute;
+        right: 10px;
+        top: 100px;
+        display: flex;
+        font-size: 12px;
+        height: 28px;
+        align-items: center;
+        font-weight: 300;
+        padding: 0 8px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--t-modal-shadow);
+        background: var(--box-background);
+
+        :global(.icon-time) {
+            margin-right: 5px;
+        }
+    }
+
+    .mlog_name {
+        width: 100%;
+        height: 20px;
+        font-size: 14px;
+        line-height: 20px;
+        margin-top: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        color: var(--t-text-color);
+    }
+
+    .mlog_footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .mlog_author, .mlog_pubTime {
+        font-size: 14px;
+        line-height: 24px;
+        padding-bottom: 20px;
+        font-weight: 300;
+        color: var(--t-muted-color);
+    }
+
+    &:hover {
+        :global(.icon-mvlist) {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .mlog_cover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+@keyframes soundPaying {
+    from {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(10deg)
+    }
+
+    to {
+        -webkit-transform: rotate(370deg);
+        transform: rotate(370deg)
+    }
+}

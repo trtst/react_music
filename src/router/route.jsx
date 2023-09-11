@@ -7,6 +7,7 @@ const PlayListDetail = lazy(() => import('@view/playlist/detail'));
 const Mv = lazy(() => import('@view/mv'));
 const Singer = lazy(() => import('@view/singer'));
 const SingerDetail = lazy(() => import('@view/singer/detail'));
+const SongDetail = lazy(() => import('@view/song'));
 const User = lazy(() => import('@view/user'));
 const NotFound = lazy(() => import('@view/404'));
 
@@ -59,6 +60,10 @@ const routeList = [
     {
         path: "/singer/detail",
         element: <SingerDetail />
+    },
+    {
+        path: "/song",
+        element: <SongDetail />
     },
     {
         path: "/user",

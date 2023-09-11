@@ -1,12 +1,13 @@
 import React, { Suspense } from 'react';
 import { useRoutes } from 'react-router-dom';
 import routeList from './route';
+import Loading from '@components/loading';
 
 export default function Router() {
     const routerList = useRoutes(routeList);
 
     return (
-        <Suspense fallback={<div>加载中。。。</div>}>
+        <Suspense fallback={<Loading />}>
             {routerList}
         </Suspense>
     )

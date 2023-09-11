@@ -1,0 +1,23 @@
+.reply_comment {
+    padding: 10px 15px;
+    margin-top: 5px;
+    background: var(--t-container-background);
+    border-radius: var(--border-radius);
+
+    h3 {
+        line-height: 14px;
+        padding-bottom: 10px;
+        font-size: 14px;
+        font-weight: 300;
+        color: var(--t-light-color);
+    }
+}
+.comment_textarea {
+    position: relative;
+    border: 1px solid #e9e9e9;
+    border-radius: var(--border-radius);
+    background: #fff;
+}
+.comment_box_footer {
+    padding: 15px 0 0;
+}

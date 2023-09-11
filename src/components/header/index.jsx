@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
-import { Input, Dropdown } from 'antd';
+import { Dropdown } from 'antd';
+import SearchBox from '@components/search';
 import HeaderSty from './index.module.scss';
 import { loginStore } from '@store/login';
 
@@ -15,11 +16,13 @@ const  items = [
 
 export default memo(function Header() {
     const [ themeMode, setThemeMode ] = useState(true);
-    const isLogin = loginStore(state => state.isLogin);
-    const userInfo = loginStore(state => state.userInfo);
-    const loginModle = loginStore((state) => state.loginModle); 
-    const setLoginModle = loginStore((state) => state.setLoginModle);
-    const setLogout = loginStore((state) => state.setLogout);
+    const [ isLogin, userInfo, loginModle, setLoginModle, setLogout ] = loginStore(state => [ 
+        state.isLogin, 
+        state.userInfo,
+        state.loginModle,
+        state.setLoginModle,
+        state.setLogout
+    ]);
 
     // 切换明暗主题
     const toggleTheme = () => {
@@ -52,9 +55,7 @@ export default memo(function Header() {
         <>
             <div className={HeaderSty.header}>
                 {/* 搜索框 */}
-                <div className={HeaderSty.searc}>
-                    <Input size="large" placeholder="请输入歌名、歌词、歌手或专辑" allowClear />
-                </div>
+                <SearchBox />
                 
                 {/* 用户操作：登录注册退出 */}
                 <div className={HeaderSty['user-info']}>

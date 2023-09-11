@@ -1,0 +1,107 @@
+.comments {
+    padding-top: 3px;
+}
+
+.comment_hd {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    font-size: 0;
+    padding-bottom: 20px;
+
+    h2 {
+        flex: 1;
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 400;
+
+        em {
+            padding-left: 20px;
+            font-size: 14px;
+            line-height: 14px;
+            font-style: normal;
+            font-weight: 300;
+            color: var(--t-muted-color);
+        }
+    }
+
+    .userInfo {
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--border-radius);
+            vertical-align: top;
+        }
+
+        span {
+            display: inline-block;
+            padding: 0 20px;
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: 300;
+            color: var(--t-muted-color);
+        }
+    }
+}
+
+.comment_box {
+
+    .comment_textarea {
+        position: relative;
+        border-radius: var(--border-radius);
+    }
+
+    .pre {
+        visibility: hidden;
+    }
+
+    .inp_paragraph {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: calc(100% - 20px);
+        resize: none;
+        width: auto;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        font-family: inherit;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: hidden;
+    }
+
+    .inp_paragraph, .pre {
+        width: calc(100% - 30px);
+        padding: 10px 15px;
+        line-height: 24px;
+        min-height: 90px;
+        font-size: 14px;
+        color: var(--t-text-color);
+        border-radius: 4px;
+        white-space: pre-wrap;
+        word-wrap: break-word
+    }
+
+    .comment_box_footer {
+        display: flex;
+        padding: 0 0 50px;
+        justify-content: space-between;
+    }
+
+    .comment_limit {
+        display: inline-block;
+        line-height: 28px;
+        padding: 0 0 0 20px;
+        font-size: 14px;
+        color: var(--t-muted-color);
+        font-weight: 300;
+
+        em {
+            font-style: normal;
+        }
+    }
+}
+.pagination {
+    padding: 20px 0;
+}

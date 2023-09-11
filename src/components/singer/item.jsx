@@ -24,7 +24,7 @@ export default function SingerItem({list, ctx}) {
                 <div className={sty.item_bg}>
                     <img src={`${list.img1v1Url}?param=120y120`} alt=""  />
                 </div>
-                <Link to={`/singer/detail`} className={sty.item_img}>
+                <Link to={`/singer/detail?id=${list.id}`} className={sty.item_img}>
                     <img src={`${list.img1v1Url}?param=200y200`} alt="" className={sty.item_author} />
                 </Link>
                 <div className={sty.item_follow} onClick={followed}><i className={`iconfont icon-collect${list.followed ? '-active' : ''}`}></i><span>{list.followed ? '已关注' :'关注TA'}</span></div>

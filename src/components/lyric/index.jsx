@@ -3,7 +3,7 @@ import { playListInfoStore } from '@store/index';
 import { lyrics } from '@apis/http';
 import sty from './scss/index.module.scss';
 
-export default function Lyric({ sId, currentTime, maxH = '390px'}) {
+export default function Lyric({ sId, currentTime = 0, maxH = '390px'}) {
     // 获取当前播放音乐信息
     const curSongInfo = playListInfoStore(state => state.playList[state.playIndex]);
     const [ lyric, setLyric ] = useState([]);

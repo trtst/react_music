@@ -141,7 +141,6 @@ export default function SingerDetail() {
     // 关注、取消歌手
     const followArtist = (item, type) => {
         return async() => {
-            console.log(item);
             const { data: res } = await artistSub({ id: item.id, t: item.followed ? 0 : 1 })
 
             if (res.code !== 200) {

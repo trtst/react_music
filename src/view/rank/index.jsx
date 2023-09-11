@@ -61,7 +61,6 @@ export default function Rank() {
 
         setCategory(rankList);
         setRid(() => params.get('rid') ?? rankList[0].list[0].id );
-        console.log(2);
     };
     // 获取排行榜详情
     const getListDetail = async() => {
@@ -96,8 +95,6 @@ export default function Rank() {
             getListDetail();
         }
     }, [rid]);
-
-    console.log(1);
 
     return (
         <div className={rankSty.rank}>
