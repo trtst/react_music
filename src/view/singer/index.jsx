@@ -54,7 +54,7 @@ export default function SingerList() {
         const newList = params.offset !== 0 ? [...lists, ...res.artists] : res.artists;
         
         setLists(newList);
-        // setLoading(false);
+        setLoading(false);
         setHasMore(res.more);
     };
 
