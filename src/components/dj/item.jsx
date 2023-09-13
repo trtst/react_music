@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from 'antd';
 import { formartNum } from '@utils/index';
 import itemSty from './scss/item.module.scss';
 
-export default function DjItem({ list }) {
+export default memo(function DjItem({ list }) {
     return (
         <Link to="" className={itemSty.djItem}>
             <div className={itemSty.faceImg}>
@@ -17,4 +17,4 @@ export default function DjItem({ list }) {
             </div>
         </Link>
     )
-}
+});

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useCallback } from 'react';
 import Card from './card';
 import AlbumList from '@components/album/list';
 import { topAlbum } from '@apis/http.js';
@@ -11,16 +11,16 @@ export default memo(function Album() {
     const [ loading, setLoading ] = useState(true);
 
     // 热门标签切换
-    const getIndex = (idx) => {
+    const getIndex = useCallback((idx) => {
         getAlbumList(idx);
-    };
+    });
 
     useEffect(() => {
         getAlbumList();
     }, []);
 
     // 新碟上架
-    async function getAlbumList (idx = 0) {
+    const getAlbumList = async (idx = 0) => {
         setLoading(true);
         const { data: res } = await topAlbum({limit: LIMIT, offset: 0, area: ALBUM_AREA[idx]['code']})
 
@@ -30,7 +30,7 @@ export default memo(function Album() {
 
         setLists(res.monthData.slice(0, LIMIT));
         setLoading(false);
-    }
+    };
 
     return (
         <Card title="新碟上架" type="album" getIndex={getIndex} tags={ALBUM_AREA}>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton, Image } from 'antd';
 import { getBanner } from '@apis/http.js';
@@ -14,13 +14,13 @@ const typeObj = {
     3000: 'url', //外链
 };
 
-export default function Banner() {
+export default memo(function Banner() {
     const navigate = useNavigate();
     const [ list, setList ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
     // 点击轮播图事件
-    const pathHandler = useCallback((info) => {
+    const pathHandler = info => {
         return () => {
             if (info.targetType == 3000) {
                 window.open(info.url, '_blank')
@@ -30,20 +30,22 @@ export default function Banner() {
                 }
             }
         }
-    });
+    };
+
+    const getBannerHandler = async () => {
+        // 获取轮播图数据
+        const { data: res } = await getBanner()
+
+        if (res.code !== 200) {
+            return proxy.$msg.error('数据请求失败')
+        }
+
+        setList(res.banners);
+        setLoading(false);
+    }
 
     useEffect(() => {
-        (async()=> {
-            // 获取轮播图数据
-            const { data: res } = await getBanner()
-
-            if (res.code !== 200) {
-                return proxy.$msg.error('数据请求失败')
-            }
-        
-            setList(res.banners);
-            setLoading(false);
-        })();
+        getBannerHandler();
     }, []);
 
     return (
@@ -70,4 +72,4 @@ export default function Banner() {
             }
         </div>
     )
-}
+})

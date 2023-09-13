@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toplist, topRankList } from '@apis/http.js';
 import { formatSongs, formartDate } from '@utils/index';
+import { playListInfoStore } from '@store/index';
 import rankSty from './scss/rank.module.scss';
 import { Skeleton, Image } from 'antd';
 
 const LIMIT = 6, LIST = 4;
 
-export default function Rank() {
-    // 排行榜类别列表
-    const [ topList, setTopList ] = useState([]);
-    // 排行榜下的歌曲列表
-    const [ songList, setSongList ] = useState({});
+export default memo(function Rank() {
+    const [ topList, setTopList ] = useState([]);  // 排行榜类别列表
+    const [ songList, setSongList ] = useState({}); // 排行榜下的歌曲列表
     const [ loading, setLoading ] = useState(true);
+    const addToList = playListInfoStore( state => state.addToList); //添加歌曲到当前播放列表
 
     useEffect(() => {
         getToplist();
@@ -31,11 +31,10 @@ export default function Rank() {
 
         list.forEach(item => {
             promises.push(topRankList({ id: item.id }))
-            
         });
 
         Promise.all(promises).then(lists => {
-            lists.forEach((item, index) => {
+            lists.forEach(item => {
                 const { data: res } = item;
 
                 if (res.code !== 200) {
@@ -54,9 +53,9 @@ export default function Rank() {
     };
 
     // 添加到播放歌单
-    const addSongList = () => {
-
-    }
+    const addSongList = item => {
+        return () => addToList([item]);
+    };
 
     return (
         <div className={rankSty.rank}>
@@ -86,22 +85,22 @@ export default function Rank() {
                 topList.map(item => 
                     <div className={rankSty.rankItem} key={item.id}>
                         <div className={rankSty.itemHeader}>
-                            <Link to={`/rank`}>{item.name}</Link>
+                            <Link to={`/rank?id=${item.id}`}>{item.name}</Link>
                             <div className={rankSty.itemUpdate}>最近更新：{formartDate(item.updateTime, 'MM月dd日')}<span>（{item.updateFrequency}）</span></div>
                         </div>
                         <div className={rankSty.itemMain}>
                             {
                                 songList[item.id] && songList[item.id].map(itm =>
                                     <div className={rankSty.rankSong} key={itm.id}>
-                                        <div className={rankSty.songimg}>
+                                        <Link to={`/song?id=${itm.id}`} className={rankSty.songimg}>
                                             <Image preview={false} src={`${itm.album.picUrl}?param=120y120`} />
-                                        </div>
+                                        </Link>
                                         <div className={rankSty.songinfo}>
-                                            <Link to="" className={rankSty.songTitle}>{itm.name}</Link>
+                                            <Link to={`/song?id=${itm.id}`} className={rankSty.songTitle}>{itm.name}</Link>
                                             <div className={rankSty.songAuthor}>
                                                 {
                                                     itm.singer.map(author => 
-                                                        <Link to="" className={rankSty.songName} key={author.name}>{author.name}</Link>
+                                                        <Link to={`/singer/detail?id=${author.id}`} className={rankSty.songName} key={author.name}>{author.name}</Link>
                                                     )
                                                 }
                                             </div>
@@ -119,4 +118,4 @@ export default function Rank() {
             }
         </div>
     )
-}
+});

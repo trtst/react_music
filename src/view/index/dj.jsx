@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useCallback } from 'react';
 import { getHotDj } from '@apis/http.js';
 import DjList from '@components/dj/list';
 import djSty from './scss/dj.module.scss';
@@ -24,7 +24,7 @@ export default memo(function Dj() {
 
         setLists(res.djRadios);
         setLoading(false);
-    }
+    };
 
     return (
         <div className={djSty.dj}>

@@ -4,7 +4,7 @@ import cardSty from './scss/card.module.scss';
 export default memo(function Card({ title, tags, children, getIndex}) {
     const [ idx, setIdx] = useState(0);
 
-    const chooseTag = (index) => {
+    const chooseTag = index => {
         return () => {
             getIndex(index);
             setIdx(index);

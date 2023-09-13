@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image } from 'antd';
 import { Link } from 'react-router-dom';
 import sty from './scss/item.module.scss';
 import { formartNum } from '@utils/index';
 
-export default function MvItem({list, row}) {
+export default memo(function MvItem({list, row}) {
     return (
         <Link to="" className={`${sty.item} ${row != 5 ? 'row_' + row : ''}`}>
             <div className={sty.faceImg}>
@@ -24,4 +24,4 @@ export default function MvItem({list, row}) {
             </div>
         </Link>
     )
-}
+});

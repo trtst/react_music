@@ -99,10 +99,6 @@ export default forwardRef(function Audio({ ctx }, ref) {
         setCurTime(e.target.currentTime);
     };
 
-    // useEffect(() => {
-        
-    // }, []);
-
     useEffect(() => {
         // 当前播放歌曲变化的时候  重置状态及当前播放的时长
         // 页面初始化后，给音频设置音量
@@ -128,7 +124,7 @@ export default forwardRef(function Audio({ ctx }, ref) {
         if ($myAudio) {
             isPlayed ? $myAudio.play() : $myAudio.pause();
         }
-    })
+    }, [])
 
     // 暴露出音频组件的方法,在其他组件调用
     useImperativeHandle(ref, () => ({

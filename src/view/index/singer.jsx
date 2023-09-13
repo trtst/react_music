@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { Carousel, Skeleton, Image } from 'antd';
 import { topArtists } from '@apis/http.js';
 import singerSty from './scss/singer.module.scss';
@@ -11,8 +11,16 @@ const contentStyle = {
     lineHeight: '160px',
     textAlign: 'center',
     background: '#364d79',
-  };
-export default function Singer() {
+};
+const splitGroup = (array, subGroupLength) => {
+    let index = 0;
+    let newArray = [];
+    while(index < array.length) {
+        newArray.push(array.slice(index, index += subGroupLength));
+    }
+    return newArray;
+}
+export default memo(function Singer() {
     const [ lists, setLists ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
@@ -27,16 +35,7 @@ export default function Singer() {
 
         setLists(() => splitGroup(res.artists, COUNT))
         setLoading(false);
-    }
-
-    const splitGroup = (array, subGroupLength) => {
-        let index = 0;
-        let newArray = [];
-        while(index < array.length) {
-            newArray.push(array.slice(index, index += subGroupLength));
-        }
-        return newArray;
-    }
+    };
 
     useEffect(() => {
         getArtists();
@@ -64,7 +63,7 @@ export default function Singer() {
                             <div className={singerSty.box} style={contentStyle} key={index}>
                                 {
                                     list.map(item => 
-                                        <Link className={singerSty.avatar} to="" key={item.id}>
+                                        <Link className={singerSty.avatar} to={`/singer/detail?id=${item.id}`} key={item.id}>
                                             <Image preview={false} src={`${item.picUrl}?param=96y96`} />
                                         </Link>
                                     )
@@ -78,4 +77,4 @@ export default function Singer() {
             </div>
         </div>
     )
-}
+});

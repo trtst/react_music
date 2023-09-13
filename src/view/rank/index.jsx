@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { topListDetail, playListDetail } from '@apis/http';
 import { formatSongs, formartDate, formartNum } from '@utils/index';
+import { playListInfoStore } from '@store/index';
 import SongList from '@components/songlist';
 import rankSty from './scss/index.module.scss';
 import { Spin } from 'antd';
@@ -21,11 +22,12 @@ let total = 0;
 export default function Rank() {
     const navigate = useNavigate();
     const [ params ] = useSearchParams();
-    const [ rid, setRid ] = useState();
-    const [ category, setCategory ] = useState([]);
-    const [ info, setInfo ] = useState({});
-    const [ songList, setSongList ] = useState([]);
+    const [ id, setId ] = useState();
+    const [ category, setCategory ] = useState([]);  // 排行榜类别
+    const [ info, setInfo ] = useState({});          // 当前排行榜信息
+    const [ songList, setSongList ] = useState([]);  // 当前排行榜歌曲列表
     const [ loading, setLoading ] = useState(true);
+    const playAllSong = playListInfoStore( state => state.playAllSong); //添加歌曲到当前播放列表
 
     // 获取排行榜场景列表
     const getRankTypeList = async() => {
@@ -60,12 +62,13 @@ export default function Rank() {
         });
 
         setCategory(rankList);
-        setRid(() => params.get('rid') ?? rankList[0].list[0].id );
+        setId(() => params.get('id') ?? rankList[0].list[0].id );
     };
+
     // 获取排行榜详情
     const getListDetail = async() => {
         setLoading(true);
-        const { data: res } = await playListDetail({ id: rid, s: -1 })
+        const { data: res } = await playListDetail({ id, s: -1 })
     
         if (res.code !== 200) {
             return proxy.$msg.error('数据请求失败')
@@ -78,23 +81,28 @@ export default function Rank() {
         setLoading(false);
     };
 
+    // 切换排行榜
+    const selectItem = (item) => {
+        return () => {
+            setId(item.id);
+            navigate(`/rank?id=${item.id}`);
+        }
+    };
+
+    // 播放列表为当前歌单的全部歌曲
+    const playAllSongs = () => {
+        playAllSong(songList);
+    };
+
     useEffect(() => {
         getRankTypeList();
     }, []);
 
-    // 切换排行榜
-    const selectItem = (item) => {
-        return () => {
-            setRid(item.id);
-            navigate(`/rank?rid=${item.id}`);
-        }
-    };
-
     useEffect(() => {
-        if(rid) {
+        if(id) {
             getListDetail();
         }
-    }, [rid]);
+    }, [id]);
 
     return (
         <div className={rankSty.rank}>
@@ -130,7 +138,7 @@ export default function Rank() {
                 <div className={rankSty.songMain}>
                     <div className={rankSty.songHeader}>
                         <h4>歌曲列表 <em>{total + '首歌'}</em></h4>
-                        <span className={rankSty.playAll}><i className="iconfont icon-audio-play"></i> 播放全部</span>
+                        <span className={rankSty.playAll} onClick={playAllSongs}><i className="iconfont icon-audio-play"></i> 播放全部</span>
                         <span className={rankSty.collect}><i className={`iconfont icon-collect${info.subscribed ? '-active' : ''}`}></i> { info.subscribed ? '已收藏' : '收藏'}</span>
                     </div>
                     <SongList lists={songList} loading={loading} />
@@ -145,7 +153,7 @@ export default function Rank() {
                             <div className={rankSty.sideItemMain}>
                                 {
                                     item.list.map(list => 
-                                        <div className={`${rankSty.sideItemBox} ${ list.id == rid ? 'active' : ''}`} onClick={selectItem(list)} key={list.id}>
+                                        <div className={`${rankSty.sideItemBox} ${ list.id == id ? 'active' : ''}`} onClick={selectItem(list)} key={list.id}>
                                             <img className={rankSty.itemImg} src={list.coverImgUrl} />
                                             <div className={rankSty.itemInfo}>
                                                 <div className={rankSty.itemTitle}>

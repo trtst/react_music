@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import Card from './card';
 import { MV_AREA } from '@utils/index';
 import { mv } from '@apis/http.js';
@@ -11,9 +11,9 @@ export default memo(function Mv() {
     const [ loading, setLoading ] = useState(true);
 
     // 热门标签切换
-    const getIndex = (idx) => {
+    const getIndex = useCallback((idx) => {
         getMvList(idx);
-    };
+    }, []);
 
     // 最新MV
     const getMvList = async(idx = 0) => {
@@ -26,7 +26,7 @@ export default memo(function Mv() {
 
         setLists(res.data)
         setLoading(false);
-    }
+    };
 
     useEffect(() => {
         getMvList();

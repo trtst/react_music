@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from 'antd';
 import { formartNum } from '@utils/index';
 import sty from './scss/item.module.scss';
 
-export default function Item({list}) {
+export default memo(function Item({list}) {
     
     return (
         <div className={sty.item}>
@@ -24,4 +24,4 @@ export default function Item({list}) {
             </div>
         </div>
     )
-}
+});

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image } from 'antd';
 import itemSty from './scss/item.module.scss';
 import { Link } from 'react-router-dom';
 
-export default function Item({list}) {
+export default memo(function Item({list}) {
     return (
         <Link to={`/album/detail?id=${list.id}`} className={itemSty.item}>
             <div className={itemSty.faceImg}>
@@ -19,4 +19,4 @@ export default function Item({list}) {
             </div>
         </Link>
     )
-}
+});
