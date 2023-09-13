@@ -24,8 +24,8 @@ export default forwardRef(function Audio({ ctx }, ref) {
 
     // 音频播放时候 初始化状态，获取音频总时长
     const playSong = (e) => {
-        setInitAudioReady(true);
-        setPlayed(true);
+        // setInitAudioReady(true);
+        // setPlayed(true);
     };
 
     // 音乐 播放/暂停/上一首/下一首
@@ -52,7 +52,7 @@ export default forwardRef(function Audio({ ctx }, ref) {
             }
 
             setInitAudioReady(false);
-            setPlayed(false);
+            setPlayed(true);
             setPlayIndex(index);
         } else {
             loopSong()
@@ -92,39 +92,35 @@ export default forwardRef(function Audio({ ctx }, ref) {
 
     // 监听音频时间， 实时更新当前播放时间
     const updateSongTime = (e) => {
-        if (!initAudioReady) {
-            return
+        if (initAudioReady) {
+            setCurTime(e.target.currentTime);
         }
-
-        setCurTime(e.target.currentTime);
     };
 
     useEffect(() => {
+        setInitAudioReady(false);
+        setCurTime(0);
+
         // 当前播放歌曲变化的时候  重置状态及当前播放的时长
         // 页面初始化后，给音频设置音量
         const $myAudio = myAudio.current;
     
         if ($myAudio) {
-            $myAudio.play();
+            // $myAudio.play();
             $myAudio.volume = volume;
         }
-        
-        setInitAudioReady(false);
-        setCurTime(0);
     }, [curSongInfo]);
 
     useEffect(() => {
         // 等待音频加载成功完成后播放
-        if (!initAudioReady) {
-            return
+        if (initAudioReady) {
+            const $myAudio = myAudio.current;
+
+            if ($myAudio) {
+                isPlayed ? $myAudio.play() : $myAudio.pause();
+            }
         };
-
-        const $myAudio = myAudio.current;
-
-        if ($myAudio) {
-            isPlayed ? $myAudio.play() : $myAudio.pause();
-        }
-    }, [])
+    }, [initAudioReady, isPlayed])
 
     // 暴露出音频组件的方法,在其他组件调用
     useImperativeHandle(ref, () => ({

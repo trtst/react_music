@@ -7,7 +7,7 @@ export default memo(function Sidebar() {
     console.log('Sidebar render');
     return (
         <div className={sideSty.sidebar}>
-            <Link className={sideSty.logo} to='/'><img src="src/assets/img/logo.jpg" /></Link>
+            <Link className={sideSty.logo} to='/'><img src={`/src/assets/img/logo.jpg`} /></Link>
             <Menu />
         </div>
     )
