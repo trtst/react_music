@@ -3,12 +3,14 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import SongList from '@components/songlist';
 import AlbumList from '@components/album/list';
 import MvList from '@components/mv/list';
+import { App } from 'antd';
 import { artistDetail, artists, artistFans, artistFansCount, simiArtists, artistSub, artistAlbum, artistMv, artistDesc } from '@apis/http';
 import { playListInfoStore } from '@store/index';
 import { formartNum, formatSongInfo } from '@utils/index';
 import sty from './scss/detail.module.scss';
 
 export default function SingerDetail() {
+    const { message } = App.useApp();
     const location = useLocation();
     const [ searchParams ] = useSearchParams();
     const id = searchParams.get('id') ?? '';
@@ -38,7 +40,9 @@ export default function SingerDetail() {
         const { data: res } = await artistDetail({ id, timestamp: new Date().valueOf() })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setArtist({...res.data.artist, ...res.data.user});
@@ -51,7 +55,9 @@ export default function SingerDetail() {
         const { data: res } = await artists({ id, timestamp: new Date().valueOf() })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         const list = res.hotSongs.map(item => formatSongInfo(item));
@@ -65,7 +71,9 @@ export default function SingerDetail() {
         const { data: res } = await artistAlbum(par)
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setHotAlbums(res.hotAlbums);
@@ -78,7 +86,9 @@ export default function SingerDetail() {
         const { data: res } = await artistMv(par)
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
     
         setHotMvs(res.mvs);
@@ -91,7 +101,9 @@ export default function SingerDetail() {
         const { data: res } = await artistDesc({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setBriefDesc(res.briefDesc);
@@ -121,7 +133,9 @@ export default function SingerDetail() {
         const { data: res } = await artistFans({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
         
         setFans(res.data);
@@ -132,7 +146,9 @@ export default function SingerDetail() {
         const { data: res } = await artistFansCount({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
         
         setFansCount(res.data);
@@ -144,7 +160,9 @@ export default function SingerDetail() {
             const { data: res } = await artistSub({ id: item.id, t: item.followed ? 0 : 1 })
 
             if (res.code !== 200) {
-                return proxy.$msg.error('数据请求失败')
+                return message.error({
+                content: res.message
+            });
             }
 
             if (type == 'list') {
@@ -170,7 +188,9 @@ export default function SingerDetail() {
         const { data: res } = await simiArtists({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
         
         setSimiList(res.artists.slice(0, 8));

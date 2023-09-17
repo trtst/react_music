@@ -7,15 +7,15 @@ import PhoneLogin from './phone';
 import loginSty from './scss/index.module.scss';
 
 export default function Login() {
-    const [ type, setType ] = useState('phone'); // 登录的方式，默认二维码登录 qr: 二维码登录  pwd: 账号密码登录  phone: 手机号快捷登录
-    const loginModle = loginStore((state) => state.loginModle); 
-    const setLoginModle = loginStore((state) => state.setLoginModle);
+    const [ type, setType ] = useState('qr'); // 登录的方式，默认二维码登录 qr: 二维码登录  pwd: 账号密码登录  phone: 手机号快捷登录
+    const [ loginModle, setLoginModle] = loginStore((state) => [ state.loginModle, state.setLoginModle ]); 
 
     // 取消登录弹窗
     const handleCancel = () => {
         setLoginModle(!loginModle);
     };
 
+    // 切换登录方式
     const switchLogin = (type) => {
         return () => {
             setType(type);

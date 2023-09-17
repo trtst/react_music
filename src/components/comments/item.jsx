@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Skeleton, Popconfirm } from 'antd';
 import { loginStore } from '@store/login';
 import { formatMsgTime } from '@utils/index';
@@ -6,7 +6,7 @@ import sty from './scss/item.module.scss';
 import { Link } from 'react-router-dom';
 import Reply from './reply';
 
-export default function CommentItem({ lists, loading, commentHandler, likeComment}) {
+export default memo(function CommentItem({ lists, loading, commentHandler, likeComment}) {
     const [ isLogin, userInfo, setLoginModle ] = loginStore(state => [ state.isLogin, state.userInfo, state.setLoginModle ]);
     const [ replyId, setReplyId ]= useState(0);
     const [ replyIndex, setReplyIndex ]= useState(-1);
@@ -30,7 +30,7 @@ export default function CommentItem({ lists, loading, commentHandler, likeCommen
         return (item, index) => {
             return (item.commentId === replyId && replyIndex === index) ? true : false
         }
-    })
+    }, [replyId, replyIndex])
 
     // 回复评论
     const replyCommentShow = (item, index) => {
@@ -46,17 +46,17 @@ export default function CommentItem({ lists, loading, commentHandler, likeCommen
         }
     };
 
-    const replyMsg = (reply) => {
+    const replyMsg = useCallback((reply) => {
         commentHandler(2, reply, replyId);
         setReplyId(0);
         setReplyIndex(-1);
-    };
+    }, [replyId]);
 
-    const isLike = useMemo(() => {
+    const isLike = () => {
         return (item) => {
             return item.liked ? 'active' : '';
         }
-    });
+    };
 
     return (
         <>
@@ -127,4 +127,4 @@ export default function CommentItem({ lists, loading, commentHandler, likeCommen
             }
         </>
     )
-}
+})

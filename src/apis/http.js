@@ -135,7 +135,7 @@ const topListDetail = () => { return api.get('/toplist/detail', {}) }
 
 /* ********* MV ********* */
 // 获取 mv
-const mv = ({ area = '', type = '', order = '', limit = 50, offset = 0 }) => { return api.get(`/mv/all?area=${area}&type=${type}&order=${order}&limit=${limit}&offset=${offset}`, {}) }
+const mv = ({ area = '全部', type = '全部', order = '上升最快', limit = 50, offset = 0 }) => { return api.get(`/mv/all?area=${area}&type=${type}&order=${order}&limit=${limit}&offset=${offset}`, {}) }
 // 获取 mv详情
 const mvDetail = ({ id = '' }) => { return api.get(`/mv/detail?mvid=${id}`, {}) }
 // 获取 地址

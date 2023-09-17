@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, Select, message } from 'antd';
+import { Button, Form, Input, Select, App } from 'antd';
 import { sentCode, loginPhone } from '@apis/http';
 import { countrycode } from '@utils/index';
 import { loginStore } from '@store/index';
@@ -18,13 +18,11 @@ const prefixSelector = (
 
 export default function Phone() {
     const [ form ] = Form.useForm();
-    const [ messageApi, contextHolder ] = message.useMessage();
+    const { message } = App.useApp();
     const phone = Form.useWatch('phone', form);
     const ctcode = Form.useWatch('ctcode', form);
     const [ count, setCount ] = useState(null);
-    const setLogin = loginStore((state) => state.setLogin); 
-    const setUserInfo = loginStore((state) => state.setUserInfo);
-    const setLoginModle = loginStore((state) => state.setLoginModle);
+    const [ setLogin, setUserInfo, setLoginModle ] = loginStore((state) => [ state.setLogin, state.setUserInfo, state.setLoginModle ]); 
     const timer = useRef(); // 定时器
 
     // 获取验证码
@@ -35,8 +33,7 @@ export default function Phone() {
             const { data: res } = await sentCode({ phone, ctcode });
 
             if (res.code !== 200) {
-                messageApi.open({
-                    type: 'error',
+                message.error({
                     content: res.message
                 });
             }
@@ -67,21 +64,19 @@ export default function Phone() {
             const { data: res } = await loginPhone(val);
 
             if (res.code !== 200) {
-                messageApi.open({
-                    type: 'error',
+                message.error({
                     content: res.message
                 });
             } else {
                 const userInfo = Object.assign({}, res.account, res.profile);
 
-                window.localStorage.setItem('cookie', res.cookie);
+                // window.localStorage.setItem('cookie', res.cookie);
 
                 setLogin(true);
                 setUserInfo(userInfo);
                 setLoginModle(false);
 
-                messageApi.open({
-                    type: 'success',
+                message.success({
                     content: '登录成功'
                 });
             }
@@ -90,7 +85,6 @@ export default function Phone() {
 
     return (
         <div className={phoneSty.phone}>
-            {contextHolder}
             <div className={phoneSty.title}>手机号快捷登录</div>
             <div className={phoneSty.phoneMain}>
                 <Form

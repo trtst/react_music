@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import React, { createContext, memo, useCallback, useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { message } from 'antd';
+import { App } from 'antd';
 import Singer from '@components/singer';
 import { ARTIST_AREA, ARTIST_TYPE } from '@utils/area';
 import { artistList, artistSub } from '@apis/http';
@@ -8,10 +8,24 @@ import sty from './scss/index.module.scss';
 
 const SINGER = createContext();
 
-export default function SingerList() {
-    const [ messageApi, contextHolder ] = message.useMessage();
-    const [ initial, setinitial ] = useState([{ label: '热门', val: -1 }, { label: '#', val: 0 }]);
-    const [ lists, setLists ] = useState([]);      //歌手列表
+let initial = [];
+
+const renderInitial = () => {
+    const alphabet = []
+    for (let i = 0; i < 26; i++) {
+        alphabet.push({
+            label: String.fromCharCode(65 + i),
+            val: String.fromCharCode(97 + i)
+        })
+    }
+
+    initial = [{ label: '热门', val: -1 }, ...alphabet, { label: '#', val: 0 }];
+};
+
+renderInitial();
+export default memo(function SingerList() {
+    const { message } = App.useApp();
+    const [ lists, setLists ] = useState([]);           // 歌手列表
     const [ loading, setLoading ] = useState(true); 
     const [ hasMore, setHasMore ] = useState(false); 
     const [ isOperEnd, setIsOperEnd ] = useState({
@@ -21,34 +35,20 @@ export default function SingerList() {
     const [ params, setParams ] = useState({
         area: ARTIST_AREA[0].val,
         type: ARTIST_TYPE[0].val,
-        initial: initial[0].val,
+        initial: -1,
         limit: 30,
         offset: 0,
         timestamp: new Date().getTime()
     });
 
-    const renderInitial = () => {
-        const alphabet = []
-        for (let i = 0; i < 26; i++) {
-            alphabet.push({
-                label: String.fromCharCode(65 + i),
-                val: String.fromCharCode(97 + i)
-            })
-        }
-
-        const newinitial = [initial[0], ...alphabet, initial[1]];
-        setinitial(newinitial);
-    };
-
     // 获取歌手列表
-    const getArtist = async (params) => {
+    const getArtist = async () => {
         setLoading(true);
         const { data: res } = await artistList(params)
 
         if (res.code !== 200) {
-            return messageApi.open({
-                type: 'error',
-                content: res.message,
+            return message.error({
+                content: res.message
             });
         }
         const newList = params.offset !== 0 ? [...lists, ...res.artists] : res.artists;
@@ -60,7 +60,7 @@ export default function SingerList() {
 
     // 收藏与取消歌手
     // const singerRef = useRef();  无状态子组件无法使用ref
-    const followHandler = async(par) => {
+    const followHandler = useCallback(async(par) => {
         setIsOperEnd({
             id: par.id,
             state: false
@@ -68,15 +68,13 @@ export default function SingerList() {
         const { data: res } = await artistSub({ id: par.id, t: Number(!par.followed)});
     
         if (res.code !== 200) {
-            return messageApi.open({
-                type: 'error',
-                content: res.message,
+            return message.error({
+                content: res.message
             });
         }
 
-        messageApi.open({
-            type: 'success',
-            content: '操作成功~',
+        message.success({
+            content: '操作成功~'
         });
         const newList = [...lists];
         const curItem = newList.find(item => item.id == par.id);
@@ -88,36 +86,35 @@ export default function SingerList() {
             id: par.id,
             state: true
         });
-    };
+    }, [lists]);
 
     // 加载更多
     const loadMore = () => {
         if (!loading) {
             const newParams = {...params, offset: lists.length };
 
-            getArtist(newParams);
+            setParams(newParams)
         }
     };
 
     // 切换类别
-    const selectType = useCallback((type, val) => {
+    const selectType = (type, val) => {
         return () => {
             setLists([]);
             setParams({...params, [type]: val, offset: 0});
         }
-    });
+    };
 
     useEffect(() => {
         renderInitial();
     }, []);
 
     useEffect(() => {
-        getArtist(params);
+        getArtist();
     }, [params]);
 
     return (
         <>
-            {contextHolder}
             <div className={sty.singer}>
                 <div className={sty.singer_filter}>
                     <div className={sty.filter_header}>
@@ -161,4 +158,4 @@ export default function SingerList() {
             </div>
         </>
     )
-}
+})

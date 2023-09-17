@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Skeleton, Image } from 'antd';
+import { Skeleton, Image, App } from 'antd';
 import { getBanner } from '@apis/http.js';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {  Pagination, Autoplay } from 'swiper/modules';
@@ -15,6 +15,7 @@ const typeObj = {
 };
 
 export default memo(function Banner() {
+    const { message } = App.useApp();
     const navigate = useNavigate();
     const [ list, setList ] = useState([]);
     const [ loading, setLoading ] = useState(true);
@@ -37,7 +38,9 @@ export default memo(function Banner() {
         const { data: res } = await getBanner()
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setList(res.banners);

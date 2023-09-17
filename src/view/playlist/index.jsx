@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin, App } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PlayListMain from '@components/playlist/list';
 import { catlist, playList } from '@apis/http';
@@ -15,6 +15,7 @@ const params = {
 };
 
 export default function PlayList() {
+    const { message } = App.useApp();
     const location = useLocation();
     const [ searchParams, setSearchParams ] = useSearchParams();
     const cat = searchParams.get('cat') ?? allType;
@@ -32,7 +33,9 @@ export default function PlayList() {
         const arr = [];
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
     
         for(let k in res.categories) {
@@ -52,7 +55,9 @@ export default function PlayList() {
         const { data: res } = await playList(param);
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
     
         const newLists = param.offset !== 0 ? [...lists, ...res.playlists] : res.playlists;

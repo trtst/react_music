@@ -1,13 +1,12 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, App } from 'antd';
 import { loginPwd } from '@apis/http';
 import { loginStore } from '@store/index';
 import PwdSty from './scss/pwd.module.scss';
 
 export default function Pwd() {
-    const setLogin = loginStore((state) => state.setLogin); 
-    const setUserInfo = loginStore((state) => state.setUserInfo);
-    const setLoginModle = loginStore((state) => state.setLoginModle);
+    const { message } = App.useApp();
+    const [ setLogin, setUserInfo, setLoginModle ] = loginStore((state) => [ state.setLogin, state.setUserInfo, state.setLoginModle ]); 
 
     //账号密码登录
     const submitForm = async(val) => {
@@ -15,11 +14,13 @@ export default function Pwd() {
             const { data: res } = await loginPwd(val);
     
             if (res.code !== 200) {
-                proxy.$msg.error(res.message)
+                message.error({
+                    content: res.message
+                });
             } else {
                 const userInfo = Object.assign({}, res.account, res.profile);
 
-                window.localStorage.setItem('cookie', res.cookie);
+                // window.localStorage.setItem('cookie', res.cookie);
 
                 setLogin(true);
                 setUserInfo(userInfo);

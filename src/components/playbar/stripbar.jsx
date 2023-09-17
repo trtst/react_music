@@ -1,5 +1,5 @@
-import React, { forwardRef, useContext, useMemo, useState } from 'react';
-import { Slider, Popover } from 'antd';
+import React, { forwardRef, memo, useContext, useMemo, useState } from 'react';
+import { Slider, Popover, Tooltip } from 'antd';
 import SongList from '@components/songlist';
 import Lyric from '@components/lyric';
 import { playListInfoStore, playerSetStore } from '@store/index';
@@ -7,32 +7,29 @@ import { formatSongTime } from '@utils/index';
 import sty from './scss/index.module.scss';
 import { Link } from 'react-router-dom';
 
-export default forwardRef(function stripbar({ ctx }, ref) {
+export default memo(forwardRef(function stripbar({ ctx }, ref) {
     const { curTime, setCurTime } = useContext(ctx);
-    const audioProgressWidth = useMemo(() => curTime);
-
     // 获取当前播放音乐信息
-    const [ isPlayed, playListStore, curSongInfo, setPlayIndex, setPlayList, setPlayed ] = playListInfoStore(state => [
+    const [ isPlayed, playListStore, curSongInfo, setPlayIndex, setPlayList, setPlayed, tipsInfo ] = playListInfoStore(state => [
         state.isPlayed,
         state.playList,
         state.playList[state.playIndex],
         state.setPlayIndex,
         state.setPlayList,
-        state.setPlayed
+        state.setPlayed,
+        state.tipsInfo
     ]);
-
 
     const [ muted, setMuted ] = useState(false);  // 是否静音
     const [ oldVol, setOldVol ] = useState(0);    // 取消禁音的时候，设置保留的上一次的音量值
-    const setPlayerSetting = playerSetStore((state) => state.setPlayerSetting);
     // 音量值(0~1) && 播放模式
-    const [ volume, mode ] = playerSetStore( state => [ state.volume, state.mode]);
-    const volumeProgressWidth = useMemo(() => volume );
-
+    const [ volume, mode, setPlayerSetting ] = playerSetStore( state => [ state.volume, state.mode, state.setPlayerSetting]);
+    const audioProgressWidth = useMemo(() => curTime, [ curTime ]);    // 音频播放进度
+    const volumeProgressWidth = useMemo(() => volume, [ volume ]);   // 音量
     // 播放暂停按钮
-    const playIcon = useMemo(() => !isPlayed ? 'icon-audio-play' : 'icon-audio-pause');
+    const playIcon = useMemo(() => !isPlayed ? 'icon-audio-play' : 'icon-audio-pause', [ isPlayed ]);
     // 是否静音图标
-    const mutedIcon = useMemo(() => muted || volume == 0 ? 'icon-volume-active' : 'icon-volume');
+    const mutedIcon = useMemo(() => muted || volume == 0 ? 'icon-volume-active' : 'icon-volume', [ muted, volume ]);
 
     // 拖拽滑动条，更改音频进度
     // TODO: 
@@ -59,7 +56,6 @@ export default forwardRef(function stripbar({ ctx }, ref) {
 
         // 实时改变音量大小
         ref.current.setVolumeHandler(isMuted ? 0 : oldVol);
-        
         // 个性化，本地保存用户设置的音量
         setPlayerSetting('volume', isMuted ? 0 : oldVol);
     };
@@ -72,7 +68,6 @@ export default forwardRef(function stripbar({ ctx }, ref) {
         
         // 实时改变音量大小
         ref.current.setVolumeHandler(val);
-        
         // 个性化，本地保存用户设置的音量
         setPlayerSetting('volume', val);
     };
@@ -90,7 +85,7 @@ export default forwardRef(function stripbar({ ctx }, ref) {
             title: '随机播放'
         }]
         return params[mode]
-    });
+    }, [ mode ]);
 
     // 切换播放模式
     const changePlayMode = () => {
@@ -99,9 +94,16 @@ export default forwardRef(function stripbar({ ctx }, ref) {
         setPlayerSetting('mode', newMode);
     };
 
+    // 歌词显隐
     const [ isShowLyric, setisShowLyric ] = useState(false);
     const lyricsHanlder = () => {
         setisShowLyric(!isShowLyric);
+    };
+
+    // 当前播放列表显隐
+    const [isShowLists, setisShowLists ] = useState(false);
+    const playlistHanlder = () => {
+        setisShowLists(!isShowLists);
     };
 
     // 清空播放列表
@@ -109,11 +111,6 @@ export default forwardRef(function stripbar({ ctx }, ref) {
         setPlayIndex(0);
         setPlayList([]);
         setPlayed(false);
-    };
-
-    const [isShowLists, setisShowLists ] = useState(false);
-    const playlistHanlder = () => {
-        setisShowLists(!isShowLists);
     };
 
     return (
@@ -196,10 +193,12 @@ export default forwardRef(function stripbar({ ctx }, ref) {
                                         open={isShowLists}
                                         onOpenChange={playlistHanlder}
                                     >
-                                        <div className={sty.playlist_main}>
-                                            <i className="iconfont icon-gedan"></i>
-                                            <div className={sty.playlist_num}>{ 99 > playListStore.length ? playListStore.length : '99+'}</div>
-                                        </div>
+                                        <Tooltip title={tipsInfo.text} trigger="click" open={tipsInfo.visiable}>
+                                            <div className={sty.playlist_main}>
+                                                <i className="iconfont icon-gedan"></i>
+                                                <div className={sty.playlist_num}>{ 99 > playListStore.length ? playListStore.length : '99+'}</div>
+                                            </div>
+                                        </Tooltip>
                                     </Popover>
                                 </div>
                             </div>
@@ -209,4 +208,4 @@ export default forwardRef(function stripbar({ ctx }, ref) {
             }
         </>
     )
-});
+}));

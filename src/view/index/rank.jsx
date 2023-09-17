@@ -4,11 +4,12 @@ import { toplist, topRankList } from '@apis/http.js';
 import { formatSongs, formartDate } from '@utils/index';
 import { playListInfoStore } from '@store/index';
 import rankSty from './scss/rank.module.scss';
-import { Skeleton, Image } from 'antd';
+import { Skeleton, Image, App } from 'antd';
 
 const LIMIT = 6, LIST = 4;
 
 export default memo(function Rank() {
+    const { message } = App.useApp();
     const [ topList, setTopList ] = useState([]);  // 排行榜类别列表
     const [ songList, setSongList ] = useState({}); // 排行榜下的歌曲列表
     const [ loading, setLoading ] = useState(true);
@@ -22,7 +23,9 @@ export default memo(function Rank() {
         const { data: res } = await toplist();
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
         
         const promises = [];
@@ -38,7 +41,9 @@ export default memo(function Rank() {
                 const { data: res } = item;
 
                 if (res.code !== 200) {
-                    return proxy.$msg.error('数据请求失败')
+                    return message.error({
+                        content: res.message
+                    });
                 }
                 
                 const itemList = formatSongs(res.playlist.tracks.splice(0, LIMIT), res.privileges.splice(0, LIMIT));

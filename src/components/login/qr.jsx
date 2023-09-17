@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Image } from 'antd';
+import { Image, App } from 'antd';
 import { getQRkey, createQR, checkQR, getQRLogin } from '@apis/http';
 import { loginStore } from '@store/index';
 import QrSty from './scss/qr.module.scss';
 
 let timer = null;        // 定时器，轮询扫码状态
 export default function QrLogin() {
+    const { message } = App.useApp();
     const [ info, setInfo ] = useState({
         unikey: '',       // 二维码登录生成的key
         oSrc: '',         // 生成的二维码图片
         isShowExpired: true, // 二维码是否过期
     });
     const [ loading, setLoading ] = useState(true);
-    const setLogin = loginStore((state) => state.setLogin); 
-    const setUserInfo = loginStore((state) => state.setUserInfo);
-    const setLoginModle = loginStore((state) => state.setLoginModle);
+    const [ setLogin, setUserInfo, setLoginModle ] = loginStore((state) => [ state.setLogin, state.setUserInfo, state.setLoginModle ]); 
 
     // 组件进入初始化
     useEffect(() => {
@@ -51,7 +50,9 @@ export default function QrLogin() {
         const { data: res } = await getQRkey();
 
         if (res.code !== 200) {
-            proxy.$msg.error(res.message)
+            message.error({
+                content: res.message
+            });
         } else {
             const obj = Object.assign({}, info, { unikey: res.data.unikey})
             setInfo(obj);
@@ -62,7 +63,9 @@ export default function QrLogin() {
         const { data: res } = await createQR({ key: info.unikey});
     
         if (res.code !== 200) {
-            proxy.$msg.error(res.message)
+            message.error({
+                content: res.message
+            });
         } else {
             const obj = Object.assign({}, info, { oSrc: res.data.qrimg, isShowExpired: false })
             setInfo(obj);
@@ -80,11 +83,13 @@ export default function QrLogin() {
         const { data: res } = await getQRLogin({ cookie });
     
         if (res.data.code !== 200) {
-            proxy.$msg.error(res.message)
+            message.error({
+                content: res.message
+            });
         } else {
             const userInfo = Object.assign({}, res.data.account, res.data.profile);
 
-            window.localStorage.setItem('cookie', cookie);
+            // window.localStorage.setItem('cookie', cookie);
 
             setLogin(true);
             setUserInfo(userInfo);

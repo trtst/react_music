@@ -1,21 +1,24 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, memo, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { playListInfoStore, playerSetStore } from '@store/index';
 
-export default forwardRef(function Audio({ ctx }, ref) {
+export default memo(forwardRef(function Audio({ ctx }, ref) {
     const myAudio = useRef();
-    const [ initAudioReady, setInitAudioReady ] = useState(false);  // 初始化音频准备
     const { setCurTime } = useContext(ctx);
 
-    // 是否正在播放
-    const isPlayed = playListInfoStore((state) => state.isPlayed);
-    const setPlayed = playListInfoStore((state) => state.setPlayed);
-    // 获取当前播放音乐信息
-    const playListStore = playListInfoStore((state) => state.playList);
-    const playIndexStore = playListInfoStore((state) => state.playIndex);
-    const curSongInfo = playListInfoStore((state) => state.playList[state.playIndex]);
-    const setPlayIndex = playListInfoStore((state) => state.setPlayIndex);
-    const mode = playerSetStore((state) => state.mode);
-    const volume = playerSetStore((state) => state.volume);
+    const [ initAudioReady, setInitAudioReady ] = useState(false);  // 初始化音频准备
+    
+    // 是否正在播放 & 获取当前播放音乐信息
+    const [ isPlayed, setPlayed, playListStore, playIndexStore, setPlayIndex, curSongInfo ] = playListInfoStore((state) => [ 
+        state.isPlayed, 
+        state.setPlayed,
+        state.playList,
+        state.playIndex,
+        state.setPlayIndex,
+        state.playList[state.playIndex],
+    ]);
+    
+    // 音量值(0~1) && 播放模式
+    const [ volume, mode ] = playerSetStore( state => [ state.volume, state.mode]);
 
     // 音频初始化后准备就绪
     const canplaySong = (e) => {
@@ -41,12 +44,13 @@ export default forwardRef(function Audio({ ctx }, ref) {
     const changeSong = (type) => { // type: prev/next  上一首/下一首
         if (playListStore.length !== 1) { // 若播放列表只有一首歌则单曲循环
             let index = playIndexStore;
+
             if (mode === 2) { // 随机模式
                 index = Math.floor(Math.random() * playListStore.length - 1) + 1
             } else {
-                if (type === 'prev') {
+                if (type === 'prev') { // 上一首
                     index = index === 0 ? playListStore.length - 1 : --index
-                } else {
+                } else {  // 下一首
                     index = index >= playListStore.length - 1 ? 0 : ++index
                 }
             }
@@ -69,7 +73,7 @@ export default forwardRef(function Audio({ ctx }, ref) {
     };
 
     // 音频播放结束 自动播放下一首
-    const endedSong = (e) => {
+    const endedSong = () => {
         if (mode === 1) {
             loopSong()
         } else {
@@ -120,14 +124,16 @@ export default forwardRef(function Audio({ ctx }, ref) {
                 isPlayed ? $myAudio.play() : $myAudio.pause();
             }
         };
-    }, [initAudioReady, isPlayed])
+    }, [initAudioReady, isPlayed]);
 
     // 暴露出音频组件的方法,在其他组件调用
-    useImperativeHandle(ref, () => ({
-        playAudioType,
-        setVolumeHandler,
-        setAudioProgress
-    }));
+    useImperativeHandle(ref, () => {
+        return {
+            playAudioType,
+            setVolumeHandler,
+            setAudioProgress,
+        }
+    });
 
     return (
         <>
@@ -147,4 +153,4 @@ export default forwardRef(function Audio({ ctx }, ref) {
             }
         </>
     )
-})
+}))

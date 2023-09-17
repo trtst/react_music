@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Lyric from '@components/lyric';
 import Comments from '@components/comments';
+import { App } from 'antd';
 import { formatSongs, formatSongInfo, formatSongTime, formatMsgTime } from '@utils/index';
 import { songDetail, simiSong, simiPlayList, mlog } from '@apis/http';
 import { playListInfoStore } from '@store/index';
@@ -10,6 +11,7 @@ import sty from './index.module.scss';
 const commentType = 0; // 0: 歌曲 1: mv 2: 歌单 3: 专辑  4: 电台 5: 视频 6: 动态
 
 export default function SongDetail() {
+    const { message } = App.useApp();
     const [ searchParams ] = useSearchParams();
     const id = searchParams.get('id') ?? '';
     const [ info, setInfo ] = useState();
@@ -36,7 +38,9 @@ export default function SongDetail() {
         const { data: res } = await songDetail({ ids: id, timestamp: new Date().valueOf() })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         // 是否有版权播放
@@ -52,7 +56,9 @@ export default function SongDetail() {
         const { data: res } = await simiSong({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         const list = res.songs.map(item => formatSongInfo(item));
@@ -66,7 +72,9 @@ export default function SongDetail() {
         const { data: res } = await simiPlayList({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setPlaylists(res.playlists);
@@ -77,7 +85,9 @@ export default function SongDetail() {
         const { data: res } = await mlog({ id })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setMlogs(res.data.feeds);
@@ -90,12 +100,16 @@ export default function SongDetail() {
             if (!curSongInfo || curSongInfo.id != item.id) {
                 // 无版权及vip不可播放
                 if (item.license) {
-                    proxy.$msg.error('由于版权保护，您所在的地区暂时无法使用。')
+                    message.warning({
+                        content: '由于版权保护，您所在的地区暂时无法使用。'
+                    });
                     return
                 }
 
                 if (item.vip) {
-                    proxy.$msg.error('付费歌曲，请在网易云音乐播放')
+                    message.warning({
+                        content: '付费歌曲，请在网易云音乐播放'
+                    });
                     return
                 }
                 selectPlay([item]);
@@ -150,7 +164,7 @@ export default function SongDetail() {
                                         simiList.length > 0 && simiList.map(item => (
                                             <div className={sty.simi_item} key={item.id}>
                                                 <div className={sty.item_info}>
-                                                    <Link className={sty.item_name} to={`/song?id${item.id}`}>{ item.name } </Link>
+                                                    <Link className={sty.item_name} to={`/song?id=${item.id}`}>{ item.name } </Link>
                                                     <div className={sty.item_author}>
                                                         {
                                                             item.singer && item.singer.map((author, k) => (
@@ -207,7 +221,7 @@ export default function SongDetail() {
                                     <div className={sty.song_author}>
                                         歌手： {
                                             info.singer && info.singer.map((author, k) => (
-                                                <Link className={sty.song_author} to={`/singner/detail?id=${author.id}`} key={author.name}>
+                                                <Link className={sty.song_author} to={`/singer/detail?id=${author.id}`} key={author.name}>
                                                     { k !== 0 ? ' / ' + author.name : author.name }
                                                 </Link>
                                             ))

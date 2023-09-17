@@ -15,12 +15,18 @@ const findIndex = (list, playList) => {
     return playList.findIndex(d => { return d.id === list.id })
 };
 
+let timer = null;
 
 const playListInfoStore = create(
     persist((set, get) => ({
         playList: [],        // 当前播放列表
         playIndex: 0,        // 当前音乐播放索引
         isPlayed: false,     // 当前是否播放歌曲
+
+        tipsInfo: {
+            visiable: false,
+            text: ''
+        },
     
         setPlayed: (flag) => set(() => ({ isPlayed: flag})),
         // 播放当前选中的歌曲
@@ -31,8 +37,14 @@ const playListInfoStore = create(
             set({
                 playList,
                 playIndex,
+                tipsInfo: {
+                    visiable: true,
+                    text: '已开始播放'
+                },
                 isPlayed: true
             });
+
+            clearTimer(set);
         },
         // 添加歌曲到当前播放列表
         addToList: (list) => {
@@ -40,7 +52,13 @@ const playListInfoStore = create(
     
             set({
                 playList,
+                tipsInfo: {
+                    visiable: true,
+                    text: '已添加到播放列表'
+                },
             });
+
+            clearTimer(set);
         },
         // 播放歌曲列表里全部歌曲（清空当前播放列表）
         playAllSong (list) {
@@ -48,8 +66,15 @@ const playListInfoStore = create(
     
             set({
                 playList,
+                isPlayed: true,
+                tipsInfo: {
+                    visiable: true,
+                    text: '已添加到播放列表'
+                },
                 playIndex: 0
             });
+
+            clearTimer(set);
         },
         // 当前播放歌曲的索引值
         setPlayIndex(val = 0) {
@@ -71,6 +96,20 @@ const playListInfoStore = create(
         }),
     })
 )
+
+const clearTimer = (set) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+        set({
+            tipsInfo: {
+                visiable: false,
+                text: ''
+            },
+        });
+        clearTimeout(timer);
+    }, 3000);
+}
 
 mountStoreDevtool('playListInfoStore', playListInfoStore);
 export { playListInfoStore }

@@ -1,12 +1,12 @@
-import React, { createContext, useRef, useState } from 'react';
+import React, { createContext, memo, useRef, useState } from 'react';
 import Audio from './audio';
 import StripBar from './stripbar';
 import sty from './scss/index.module.scss';
 
 const PLAYBAR = createContext();
 
-export default function PlayBar() {
-    const [ curTime, setCurTime ] = useState(0);
+export default memo(function PlayBar() {
+    const [ curTime, setCurTime ] = useState(0);  // 当前播放歌曲时长
     const audioRef = useRef();
 
     return (
@@ -19,4 +19,4 @@ export default function PlayBar() {
             </PLAYBAR.Provider>
         </div>
     )
-}
+});

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Input, Button } from 'antd';
 import sty from './scss/reply.module.scss';
 
 const { TextArea } = Input;
 const MAXLen = 140;
-export default function ReplyComment({ info, replyMsg }) {
+export default memo(function ReplyComment({ info, replyMsg }) {
     const [ msg, setMsg ] = useState('');
 
     const onChange = (e) => {
@@ -26,4 +26,4 @@ export default function ReplyComment({ info, replyMsg }) {
             </div>
         </div>
     )
-}
+});

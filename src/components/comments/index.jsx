@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { loginStore } from '@store/login';
 import { commentSong, commentMv, albumComment, comment, commentLike } from '@apis/http';
 import CommentItem from './item';
 import sty from './scss/index.module.scss';
-import { Form, Input, Button, Pagination, message } from 'antd';
+import { Form, Input, Button, Pagination, App } from 'antd';
 
 const MAXLen = 140;
-export default function Comment({ id, type}) {
-    const [messageApi, contextHolder] = message.useMessage();
+export default memo(function Comment({ id, type}) {
+    const { message } = App.useApp();
     const [ isLogin, userInfo, setLoginModle ] = loginStore(state => [ state.isLogin, state.userInfo, state.setLoginModle ]);
     const [ lists, setLists ] = useState([]);         // 留言板列表
     const [ total, setTotal ] = useState(0);
@@ -41,7 +41,9 @@ export default function Comment({ id, type}) {
         }
 
         if (info.data.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: '数据请求失败'
+            });
         }
 
         const newHotLists = info.data.hotComments && info.data.hotComments.map(item => {
@@ -80,14 +82,15 @@ export default function Comment({ id, type}) {
         })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: '数据请求失败'
+            });
         }
 
         getComment(params);
 
-        messageApi.open({
-            type: 'success',
-            content: msgTips[t],
+        message.success({
+            content: msgTips[t]
         });
     };
 
@@ -101,7 +104,9 @@ export default function Comment({ id, type}) {
         const { data: res } = await commentLike({ id, cid: item.commentId, t: Number(!item.liked), type })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: '数据请求失败'
+            });
         }
         getComment(params);
     };
@@ -115,7 +120,6 @@ export default function Comment({ id, type}) {
 
     return (
         <>
-            {contextHolder}
             <div className={sty.comments}>
                 <div className={sty.comment_hd}>
                     <h2>评论<em>共{total}条评论</em></h2>
@@ -158,4 +162,4 @@ export default function Comment({ id, type}) {
             </div>
         </>
     )
-}
+})

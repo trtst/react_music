@@ -1,18 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Spin } from 'antd';
 import { formartNum } from '@utils/index';
 import sty from './scss/index.module.scss';
 
-export default function SingerItem({list, ctx}) {
+export default memo(function SingerItem({list, ctx}) {
     const { followHandler, isOperEnd } = useContext(ctx);
     const [ isLoading, setisLoading ] = useState(false);
 
+    // 点击关注歌手的事件
     const followed = () => {
         followHandler(list);
     };
 
     useEffect(() => {
+        // 监听关注歌手事件的回调
         if (list.id == isOperEnd.id) {
             setisLoading(!isOperEnd.state)
         }
@@ -48,4 +50,4 @@ export default function SingerItem({list, ctx}) {
             </div>
         </Spin>
     )
-}
+})

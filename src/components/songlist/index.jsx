@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { List, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { playListInfoStore, loginStore } from '@store/index';
@@ -9,7 +9,8 @@ import sty from './scss/index.module.scss';
     isScroll: 歌单下的列表是分页, 播放列表是无限滚动
     pageSize: 分页 每页展示数量
 */
-export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll = false, loading = true }) {
+const LIMIT = 7;  // 播放列表一页默认7首歌曲
+export default memo(function SongList({ lists, typeSize = '', pageSize = 20, isScroll = false, loading = true }) {
     const [ curPage, setCurPage ] = useState(1);
 
     const [ isPlayed, playListStore, playIndexStore, curSongInfo, setPlayIndex, selectPlay, setPlayList, setPlayed, addToList ] = playListInfoStore( state => [
@@ -23,10 +24,7 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
         state.setPlayed,
         state.addToList
     ]);
-    const [ isLogin ] = loginStore(state => [
-        state.isLogin
-    ]);
-    
+    const isLogin = loginStore(state => state.isLogin );
     // 渲染歌单列表，表格列表序号格式化
     const indexMethod = useMemo(() => {
         return page => {
@@ -36,15 +34,15 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
                 return page + 1
             }
         }
-    });
+    }, [curPage]);
     // 播放列表样式
     const classSty = useMemo(() => {
         return item => `${sty.listItem} ${ isPlayed && (item.id === curSongInfo.id) ? 'active' : ''} ${(item.license || item.vip) ? 'disable' : ''} ${item.vip ? 'vip' : ''}`;
-    });
+    }, [isPlayed, curSongInfo]);
     // 当前播放歌曲icon状态
     const playIcon = useMemo(() => {
         return item => `iconfont ${sty.playicon} ${ isPlayed && (item.id === curSongInfo.id) ? 'icon-pause' : 'icon-play'}`;
-    });
+    }, [isPlayed, curSongInfo]);
 
     // 1、列表点击播放/暂停当前音乐
     const playCurrentSong = (item) => {
@@ -76,6 +74,11 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
             } else {
                 setPlayList();
             }
+
+            // 从倒数删除播放列表歌曲时，滚动条回到正确的位置
+            if (playListStore.length + 1 > LIMIT && playListStore.length + 1 - index <= LIMIT) {
+                setCurScrollSty(curScrollSty + 50 );
+            }
         }
     };
 
@@ -90,16 +93,17 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
             align: 'center',
             showSizeChanger: false
         } : false)
-    );
+    , [ typeSize, isLogin ]);
     
     // 自动滚动到当前播放音乐的位置
     const [curScrollSty, setCurScrollSty ] = useState(0);
     const curSongRef = useRef();
-    const scrollCurSong = (cur) => {
+    // 当前播放歌曲滚动到播放列表中间
+    const scrollCurSong = useCallback(() => {
         const curIndex = playListStore.findIndex(item => {
-            return item.id === cur.id
+            return item.id === curSongInfo.id
         });
-        let num = 0, max = 7;
+        let num = 0, max = LIMIT;
 
         if (curIndex < Math.ceil(max / 2) || playListStore.length <= max) {
             num = 0;
@@ -110,11 +114,11 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
         }
 
         setCurScrollSty(num);
-    };
+    }, [curSongInfo, playListStore]);
 
     const curSongSty = useMemo(() => {
         return { transform: `translateY(${curScrollSty}px)` };
-    });
+    }, [curScrollSty]);
 
     // 播放列表滚动效果
     const wheelHandler = (e) => {
@@ -123,9 +127,9 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
         if (e.wheelDelta > 0 || e.detail < 0) {
             setCurScrollSty(Math.abs(curScrollSty) > 0 ? curScrollSty + 50 : 0);
         } else {
-            setCurScrollSty(Math.abs(curScrollSty) < (playListStore.length - 7) / 2 * 100 ? curScrollSty - 50 : curScrollSty);
+            setCurScrollSty(Math.abs(curScrollSty) < (playListStore.length - LIMIT) / 2 * 100 ? curScrollSty - 50 : curScrollSty);
         }
-    }
+    };
 
     useEffect(() => {
         // 播放列表滚动时，防止body页面也跟随滚动
@@ -135,12 +139,16 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
         }
 
         return () => {
-            window.removeEventListener('wheel', wheelHandler);
+            if (isScroll && curSongRef.current) {
+                const $curSongRef = curSongRef.current;
+                $curSongRef.removeEventListener('wheel', wheelHandler);
+            }
         }
-    }, [curScrollSty]);
+        // react中dom监听方法内值不更新,addEventListener里面形成闭包了
+    }, [curScrollSty, playListStore]);
 
     useEffect(() => {
-        isScroll && scrollCurSong(curSongInfo);
+        isScroll && scrollCurSong();
     }, [curSongInfo]);
 
     return (
@@ -181,7 +189,7 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
                                         <i className={playIcon(item)} onClick={playCurrentSong(item)}></i>
                                     </div>
                                     <div className={`${sty.columnSong} ${sty.songName}`}>
-                                        <Link to="" className={sty.songTitle}>{ item.name }</Link>
+                                        <Link to={`/song?id=${item.id}`} className={sty.songTitle}>{ item.name }</Link>
                                         {
                                             typeSize !== 'mini' && item.mvId && (<Link className={sty.mvName} to={`/mv?id=${item.mvId}`}><i className="iconfont icon-mvlist"></i></Link>)
                                         }
@@ -224,4 +232,4 @@ export default function SongList({ lists, typeSize = '', pageSize = 20, isScroll
             </div>
         </div>
     )
-}
+});

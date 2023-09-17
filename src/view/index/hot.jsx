@@ -1,11 +1,13 @@
 import React, { useEffect, useState, memo, useCallback } from 'react';
 import { hotPlayList, playList } from '@apis/http.js';
+import { App } from 'antd';
 import Card from './card';
 import PlayList from '@components/playlist/list';
 
 const LIMIT = 6;
 
 export default memo(function Hot() {
+    const { message } = App.useApp();
     const [ tags, setTags ] = useState([]);  // 热门标签列表
     const [ lists, setLists ] = useState([]);   // 热门歌单数据
     const [ loading, setLoading ] = useState(true);
@@ -25,7 +27,9 @@ export default memo(function Hot() {
         const { data: res } = await hotPlayList();
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         const newList = [].concat([{ name: '为您推荐' }], res.tags.splice(0, LIMIT));
@@ -39,7 +43,9 @@ export default memo(function Hot() {
         const { data: res } = await playList({limit: LIMIT, offset: 0, cat: tags.length && idx != 0 ? tags[idx]['name'] : ''})
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setLists([].concat(res.playlists));

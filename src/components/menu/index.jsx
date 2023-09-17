@@ -10,7 +10,7 @@ export default memo(function Menu() {
     const selectNav = (route) => {
         navigate(route.path)
     };
-    console.log('Menu render');
+    console.log(`Menu render: ${pathname}`);
     return (
         <ul className="nav">
             {

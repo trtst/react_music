@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { loginStore, playListInfoStore } from '@store/index';
+import { App } from 'antd';
 import { playListDetail, songDetail, playlistRelated, playlistComment } from '@apis/http';
 import { formatSongs, formartDate, formartNum, formatMsgTime } from '@utils/index';
 import SongList from '@components/songlist';
 import sty from './scss/detail.module.scss';
 
 export default function PlayListDetail() {
+    const { message } = App.useApp();
     const [ isLogin, setLoginModle ] = loginStore((state) => [
         state.isLogin,
         state.setLoginModle
@@ -28,7 +30,9 @@ export default function PlayListDetail() {
         const { data: res } = await playListDetail(params)
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setInfo(res.playlist);
@@ -76,7 +80,9 @@ export default function PlayListDetail() {
         const { data: res } = await playlistRelated(params)
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setPlaylist(res.playlists);
@@ -87,7 +93,9 @@ export default function PlayListDetail() {
         const { data: res } = await playlistComment(params)
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setComments(res.comments);

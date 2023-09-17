@@ -5,7 +5,7 @@ import { formatSongs, formartDate, formartNum } from '@utils/index';
 import { playListInfoStore } from '@store/index';
 import SongList from '@components/songlist';
 import rankSty from './scss/index.module.scss';
-import { Spin } from 'antd';
+import { Spin, App } from 'antd';
 
 const RANKTYPE = [{
     name: 'TOP榜',
@@ -20,6 +20,7 @@ const RANKTYPE = [{
 let total = 0;
 
 export default function Rank() {
+    const { message } = App.useApp();
     const navigate = useNavigate();
     const [ params ] = useSearchParams();
     const [ id, setId ] = useState();
@@ -35,7 +36,9 @@ export default function Rank() {
         const rankList = [];
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         RANKTYPE.forEach(rankinfo => {
@@ -71,7 +74,9 @@ export default function Rank() {
         const { data: res } = await playListDetail({ id, s: -1 })
     
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
         const all = formatSongs(res.playlist.tracks, res.privileges);
 

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { MV_AREA, MV_TYPE } from '@utils/area';
 import { mv } from '@apis/http';
+import { App } from 'antd';
 import MvList from '@components/mv/list';
 import sty from './scss/index.module.scss';
 
 const MV_ORDER = ['上升最快', '最新'];
 
 export default function Mv() {
+    const { message } = App.useApp();
     const [ lists, setLists ] = useState([]);      //视频列表
     const [ loading, setLoading ] = useState(true); 
     const [ hasMore, setHasMore ] = useState(false); 
@@ -25,7 +27,9 @@ export default function Mv() {
         const { data: res } = await mv(params)
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         const newList = params.offset !== 0 ? [...lists, ...res.data] : res.data;

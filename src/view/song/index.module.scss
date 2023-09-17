@@ -43,6 +43,7 @@
         width: 80%;
         height: 80%;
         font-size: 0;
+        border-radius: var(--border-radius);
         box-shadow: 0 0px 10px rgba(0, 0, 0, 0.7);
         overflow: hidden;
 
@@ -54,12 +55,11 @@
 
     .cover_play_img {
         position: absolute;
-        top: 0;
+        top: calc((100% - 220px - 20px) / 2);
         left: 70px;
         z-index: 1;
-        width: 100px;
-        height: 100px;
-        padding: calc((80% - 100px - 20px) / 2);
+        width: 220px;
+        height: 220px;
         margin: 10px;
         font-size: 0;
         background: url('@/assets/img/disc.png') no-repeat;
@@ -67,8 +67,8 @@
         cursor: pointer;
         box-shadow: 0 0px 10px rgb(0 0 0 / 50%);
         border-radius: 100%;
-        animation: soundPaying 15s linear infinite;
-        animation-play-state: paused;
+        // animation: soundPaying 15s linear infinite;
+        // animation-play-state: paused;
 
         img {
             width: 100%;

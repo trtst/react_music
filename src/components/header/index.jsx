@@ -39,7 +39,7 @@ export default memo(function Header() {
         setLogout();
         localStorage.removeItem('isLogin');
         localStorage.removeItem('userInfo');
-        localStorage.removeItem('cookie');
+        // localStorage.removeItem('cookie');
     };
 
     // 登录后，头像下拉菜单的操作

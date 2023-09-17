@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { Carousel, Skeleton, Image } from 'antd';
+import React, { memo, useEffect, useState } from 'react';
+import { Carousel, Skeleton, Image, App } from 'antd';
 import { topArtists } from '@apis/http.js';
 import singerSty from './scss/singer.module.scss';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,7 @@ const splitGroup = (array, subGroupLength) => {
     return newArray;
 }
 export default memo(function Singer() {
+    const { message } = App.useApp();
     const [ lists, setLists ] = useState([]);
     const [ loading, setLoading ] = useState(true);
 
@@ -30,7 +31,9 @@ export default memo(function Singer() {
         const { data: res } = await topArtists({ limit: LIMIT })
 
         if (res.code !== 200) {
-            return proxy.$msg.error('数据请求失败')
+            return message.error({
+                content: res.message
+            });
         }
 
         setLists(() => splitGroup(res.artists, COUNT))

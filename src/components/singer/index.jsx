@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import Item from './item';
 import { Skeleton } from 'antd';
 import sty from './scss/index.module.scss';
 
-export default function Singer({ ctx, count = 6}) {
+export default memo(function Singer({ ctx, count = 6}) {
     const { lists, loading } = useContext(ctx);
 
     return (
@@ -33,4 +33,4 @@ export default function Singer({ ctx, count = 6}) {
             }
         </div>
     )
-}
+})
