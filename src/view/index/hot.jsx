@@ -15,7 +15,7 @@ export default memo(function Hot() {
     // 热门标签切换
     const getIndex = useCallback((idx) => {
         getPlayList(idx);
-    }, []);
+    }, [tags]);
 
     useEffect(() => {
         getHotTags();
