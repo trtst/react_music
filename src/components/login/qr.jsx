@@ -1,49 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { Image, App } from 'antd';
 import { getQRkey, createQR, checkQR, getQRLogin } from '@apis/http';
 import { loginStore } from '@store/index';
 import QrSty from './scss/qr.module.scss';
 
 let timer = null;        // 定时器，轮询扫码状态
-export default function QrLogin() {
+export default memo(function QrLogin() {
     const { message } = App.useApp();
     const [ info, setInfo ] = useState({
-        unikey: '',       // 二维码登录生成的key
-        oSrc: '',         // 生成的二维码图片
-        isShowExpired: true, // 二维码是否过期
+        unikey: '',       // 初始登录生成的key
+        oSrc: '',         // 通过key生成的二维码图片
+        isShowExpired: false, // 二维码是否过期
     });
     const [ loading, setLoading ] = useState(true);
-    const [ setLogin, setUserInfo, setLoginModle ] = loginStore((state) => [ state.setLogin, state.setUserInfo, state.setLoginModle ]); 
+    const [ loginModle, setLogin, setUserInfo, setLoginModle ] = loginStore((state) => [ state.loginModle, state.setLogin, state.setUserInfo, state.setLoginModle ]); 
 
     // 组件进入初始化
     useEffect(() => {
-        // 如果二维码过期了，需要重新查询key，渲染新的二维码；否则可以继续沿用二维码，直接去轮询检测二维码状态
-        if (info.isShowExpired) {
-            getQRHandler();
-        } else {
-            loginHandler();
+        if (loginModle) {
+            // 初始化查询key，渲染新的二维码
+            refreshQR();
         }
 
         return () => {
             // 切换登录方式时，组件卸载，二维码不再轮询查看用户是否扫码，减少请求量
             clearInterval(timer);
         }
-    }, []);
+    }, [loginModle]);
 
     // 监听二维码的key是否变化，生成新的二维码图片
     useEffect(() => {
-        if(info.unikey) {
+        // 二维码未过期的状态下，轮询检测二维码状态
+        if(!info.isShowExpired && info.unikey) {
             createQRHandler();
             loginHandler();
         }
-    }, [info.unikey]);
-
-    // 监听二维码是否过期
-    useEffect(() => {
-        if(!info.isShowExpired) {
-            setLoading(false);
-        }
-    }, [info.isShowExpired]);
+    }, [info.unikey, info.isShowExpired]);
 
     // 1、获取二维码登录需要 key
     const getQRHandler = async() => {
@@ -54,8 +46,7 @@ export default function QrLogin() {
                 content: res.message
             });
         } else {
-            const obj = Object.assign({}, info, { unikey: res.data.unikey})
-            setInfo(obj);
+            setInfoHandler('unikey', res.data.unikey);
         }
     };
     // 2、根据获取的key，生成二维码图片
@@ -67,17 +58,29 @@ export default function QrLogin() {
                 content: res.message
             });
         } else {
-            const obj = Object.assign({}, info, { oSrc: res.data.qrimg, isShowExpired: false })
-            setInfo(obj);
+            setInfoHandler('oSrc', res.data.qrimg);
+            setLoading(false);
         }
     };
     // 3、轮询检测扫码状态接口
-    const checkQRHandler = async() => {
-        const { data: res } = await checkQR({ key: info.unikey });
-    
-        return res;
-    };
+    const loginHandler = () => {
+        clearInterval(timer);
+        timer = setInterval(async () => {
+            const { data: res } = await checkQR({ key: info.unikey });
 
+            // 二维码过期
+            if (res.code === 800) {
+                clearInterval(timer);
+                setInfoHandler('isShowExpired', true);
+            }
+
+            // 扫码授权成功，这一步会返回cookie
+            if (res.code === 803) {
+                clearInterval(timer);
+                getQRLoginHandler(res.cookie);
+            }
+        }, 3000)
+    };
     // 4、获取登录状态及用户信息
     const getQRLoginHandler = async(cookie) => {
         const { data: res } = await getQRLogin({ cookie });
@@ -97,30 +100,19 @@ export default function QrLogin() {
         }
     }
 
-    const loginHandler = () => {
-        clearInterval(timer);
-        timer = setInterval(async () => {
-            const statusRes = await checkQRHandler();
-            
-            // 二维码过期
-            if (statusRes.code === 800) {
-                clearInterval(timer);
-                setInfo(...info, { isShowExpired: true });
-            }
-
-            // 扫码授权成功，这一步会返回cookie
-            if (statusRes.code === 803) {
-                clearInterval(timer);
-                getQRLoginHandler(statusRes.cookie);
-            }
-        }, 3000)
-    };
-
     // 当二维码重新过期后，点击刷新一下二维码
     const refreshQR = () => {
+        setInfoHandler('isShowExpired', false);
         setLoading(true);
         getQRHandler();
-    }
+    };
+
+    // 统一处理设置二维码信息，避免异步处理，导致获取的信息不能及时更新
+    const setInfoHandler = (type, val) => {
+        setInfo(obj => {
+            return Object.assign({}, obj, { [type]: val})
+        })
+    };
 
     return (
         <div className={QrSty.qr}>
@@ -130,7 +122,8 @@ export default function QrLogin() {
                 <div className={QrSty.qrImg}>
                     {
                         info.oSrc ?
-                        <Image className={QrSty.img} preview={false} src={info.oSrc} alt="扫码登录" /> :
+                        <Image className={QrSty.img} preview={false} src={info.oSrc} alt="扫码登录" onClick={refreshQR} />
+                        :
                         <i className="iconfont icon-placeholder"></i>
                     }
                 </div>
@@ -140,11 +133,11 @@ export default function QrLogin() {
                     : ''
                 }
                 {
-                    loading ?
-                    <div className={QrSty.loadQR}></div>
+                    loading || info.isShowExpired ?
+                    <div className={`${QrSty.loadQR} ${info.isShowExpired ? 'active' : ''}`}></div>
                     : ''
                 }
             </div>
         </div>
     )
-}
+});

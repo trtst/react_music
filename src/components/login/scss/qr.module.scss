@@ -31,6 +31,7 @@
         font-size: 0;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         :global {
             .ant-image {
@@ -54,24 +55,27 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
         }
-
-        .expiredBtn {
-            position: absolute;
-            z-index: 2;
-            width: 180px;
-            height: 180px;
-            line-height: 180px;
-            text-align: center;
-            color: var(--white-color);
-            cursor: pointer;
-        }
     }
 
-
+    .expiredBtn {
+        position: absolute;
+        z-index: 2;
+        width: 180px;
+        height: 180px;
+        line-height: 180px;
+        text-align: center;
+        font-size: 14px;
+        color: var(--white-color);
+        cursor: pointer;
+    }
 
     .loadQR {
         position: absolute;
         width: 180px;
         height: 180px;
+
+        &:global(.active) {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
     }
 }
