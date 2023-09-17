@@ -33,13 +33,18 @@
             vertical-align: top;
         }
 
-        span {
+        span, em {
             display: inline-block;
             padding: 0 20px;
             line-height: 30px;
             font-size: 14px;
             font-weight: 300;
             color: var(--t-muted-color);
+        }
+
+        em {
+            font-style: normal;
+            cursor: pointer;
         }
     }
 }

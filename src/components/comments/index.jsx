@@ -111,6 +111,14 @@ export default memo(function Comment({ id, type}) {
         getComment(params);
     };
 
+    // 未登录，点击登录
+    const getLogin = () => {
+        if (!isLogin) {
+            setLoginModle(true);
+            return
+        }
+    }
+
     useEffect(() => {
         const newParams = {...params, id, offset: 0 };
         
@@ -124,8 +132,15 @@ export default memo(function Comment({ id, type}) {
                 <div className={sty.comment_hd}>
                     <h2>评论<em>共{total}条评论</em></h2>
                     <div className={sty.userInfo}>
-                        <span>{userInfo.nickname}</span>
-                        <img src={userInfo.avatarUrl} alt="" className={sty.avatar} />
+                        {
+                           userInfo ? 
+                           (<>
+                                <span>{userInfo?.nickname}</span>
+                                <img src={userInfo?.avatarUrl} alt="" className={sty.avatar} />
+                            </>) 
+                            : <em onClick={getLogin}>登录</em>
+                        }
+                        
                     </div>
                 </div>
                 <Form 

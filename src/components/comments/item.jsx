@@ -52,11 +52,7 @@ export default memo(function CommentItem({ lists, loading, commentHandler, likeC
         setReplyIndex(-1);
     }, [replyId]);
 
-    const isLike = () => {
-        return (item) => {
-            return item.liked ? 'active' : '';
-        }
-    };
+    const isLike = (item) => item.liked ? 'active' : '';
 
     return (
         <>
@@ -67,7 +63,7 @@ export default memo(function CommentItem({ lists, loading, commentHandler, likeC
                     </div>
                 ) : (
                     lists.map((item, index) => 
-                        <div className={sty.comment_item} key={`comment_${index}_${item.commentId}`}>
+                        <div className={sty.comment_item} key={`comment_${item.commentId}`}>
                             <Link to={`/user?id=${item.user.userId}`} className={sty.comment_avatar}>
                                 <img src={`${item.user.avatarUrl}?param=120y120`} alt="" />
                             </Link>
