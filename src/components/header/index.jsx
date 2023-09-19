@@ -1,8 +1,9 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Dropdown } from 'antd';
 import SearchBox from '@components/search';
 import HeaderSty from './index.module.scss';
 import { loginStore } from '@store/login';
+import { useMedia } from '@assets/hooks';
 
 const  items = [
     {
@@ -15,7 +16,8 @@ const  items = [
 ];
 
 export default memo(function Header() {
-    const [ themeMode, setThemeMode ] = useState(true);
+    const colorScheme = useMedia('(prefers-color-scheme: light)', true);
+    const [ themeMode, setThemeMode ] = useState(colorScheme);
     const [ isLogin, userInfo, loginModle, setLoginModle, setLogout ] = loginStore(state => [ 
         state.isLogin, 
         state.userInfo,
@@ -27,6 +29,13 @@ export default memo(function Header() {
     // 切换明暗主题
     const toggleTheme = () => {
         setThemeMode(!themeMode);
+
+        document.body.classList.remove('light-scheme', 'dark-scheme');
+        if (!themeMode) {
+            document.body.classList.add('light-scheme');
+        } else {
+            document.body.classList.add('dark-scheme');
+        }
     }
 
     // 点击显示登录框
@@ -49,6 +58,18 @@ export default memo(function Header() {
             logoutHandler();
         }
     };
+
+    // 监听系统主题模式
+    useEffect(() => {
+        setThemeMode(colorScheme);
+
+        document.body.classList.remove('light-scheme', 'dark-scheme');
+        if (colorScheme) {
+            document.body.classList.add('light-scheme');
+        } else {
+            document.body.classList.add('dark-scheme');
+        }
+    }, [colorScheme]);
     
     console.log('Header render');
     return (

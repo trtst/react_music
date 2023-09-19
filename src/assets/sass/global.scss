@@ -98,21 +98,26 @@ $mainWidth: calc($containerWidth - $sideWidth - $paddingW);
     }
 }
 
-/* 监听操作系统主题模式 */
-@media (prefers-color-scheme: light) {
-    :root {
-        --main-background: var(--white-color);
-    }
+/* 主题模式 */
+.light-scheme {
+    --main-background: var(--white-color);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --main-background: var(--black-color);
-        --box-background: var(--gray-color);
-        --t-text-color: var(--white-color);
-        --t-muted-color: var(--white-color)
-    }
+.dark-scheme {
+    --main-background: var(--black-color);
+    --box-background: var(--gray-color);
+    --t-text-color: var(--white-color);
+    --t-muted-color: var(--white-color);
 }
+
+/* 监听操作系统主题模式 */
+// @media (prefers-color-scheme: light) {
+
+// }
+
+// @media (prefers-color-scheme: dark) {
+    
+// }
 
 @media screen and ( max-width: 1450px) {
     :root {
